@@ -98,3 +98,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
     }
   }
 }
+
+# Enable Server-Side Encryption (SSE-S3)
+resource "aws_s3_bucket_server_side_encryption_configuration" "alb_logs_encryption" {
+  bucket = aws_s3_bucket.alb_logs.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256" # Required for ALB compatibility
+    }
+  }
+}
