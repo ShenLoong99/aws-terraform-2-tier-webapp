@@ -15,10 +15,17 @@ resource "aws_instance" "app_server" {
   instance_type               = var.instance_type
   subnet_id                   = var.public_subnet_ids[count.index]
   vpc_security_group_ids      = [var.ec2_sg_id]
-  user_data                   = file("${path.root}/scripts/user_data.sh")
   user_data_replace_on_change = true
   iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   key_name                    = var.key_name
+
+  user_data = templatefile("${path.root}/scripts/user_data.tftpl", {
+    db_host = var.db_host
+    db_user = var.db_username
+    db_pass = var.db_password
+    db_name = var.db_name
+    db_port = var.db_port
+  })
 
   tags = { Name = "App-Server-${count.index}" }
 }

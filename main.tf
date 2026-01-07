@@ -64,6 +64,11 @@ module "ec2" {
   target_group_arn  = module.alb.target_group_arn
   instance_type     = var.instance_type
   key_name          = aws_key_pair.generated_key.key_name
+  db_name           = module.rds.db_name
+  db_username       = module.rds.db_username
+  db_host           = module.rds.db_host
+  db_port           = module.rds.db_port
+  db_password       = var.db_password
 }
 
 # Generate a secure Private Key
