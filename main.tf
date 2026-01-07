@@ -66,11 +66,6 @@ module "ec2" {
   key_name          = aws_key_pair.generated_key.key_name
 }
 
-resource "aws_cloudwatch_log_group" "app_logs" {
-  name              = "/aws/ec2/webapp-2-tier-project"
-  retention_in_days = 7 # Saves cost: logs deleted after 7 days
-}
-
 # Generate a secure Private Key
 resource "tls_private_key" "main" {
   algorithm = "RSA"
