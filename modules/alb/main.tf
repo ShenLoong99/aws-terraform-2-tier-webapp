@@ -8,6 +8,11 @@ resource "aws_lb" "application_lb" {
   # Enable Cross-Zone Load Balancing
   enable_cross_zone_load_balancing = true
 
+  access_logs {
+    bucket  = aws_s3_bucket.alb_logs.id
+    enabled = true
+  }
+
   tags = {
     Name = var.aws_lb_name
   }
@@ -42,5 +47,54 @@ resource "aws_lb_listener" "http" {
   default_action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.app_tg.arn
+  }
+}
+
+# The S3 Bucket
+resource "aws_s3_bucket" "alb_logs" {
+  bucket        = "my-alb-debug-logs-${random_id.suffix.hex}"
+  force_destroy = true
+}
+
+# Add the REQUIRED Policy for ap-southeast-1
+resource "aws_s3_bucket_policy" "alb_log_policy" {
+  bucket = aws_s3_bucket.alb_logs.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          # This ID is specific to ap-southeast-1 (Singapore)
+          AWS = "arn:aws:iam::114774131450:root"
+        }
+        Action = "s3:PutObject"
+        # Grant access to the AWSLogs path within the bucket
+        Resource = "${aws_s3_bucket.alb_logs.arn}/*"
+      }
+    ]
+  })
+}
+
+resource "random_id" "suffix" {
+  byte_length = 4
+}
+
+resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
+  bucket = aws_s3_bucket.alb_logs.id
+
+  rule {
+    id     = "delete-old-logs"
+    status = "Enabled"
+
+    # The filter block must contain either 'prefix' or 'and'
+    filter {
+      prefix = "" # This targets all objects in the bucket
+    }
+
+    expiration {
+      days = 14 # Automatically deletes logs older than 14 days
+    }
   }
 }

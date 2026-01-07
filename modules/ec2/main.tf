@@ -28,7 +28,7 @@ resource "aws_lb_target_group_attachment" "app_attach" {
   count            = 2
   target_group_arn = var.target_group_arn
   target_id        = aws_instance.app_server[count.index].id
-  port             = 80
+  port             = 3000
 }
 
 # Create the IAM Role
