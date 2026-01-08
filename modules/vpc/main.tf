@@ -52,6 +52,9 @@ resource "aws_flow_log" "vpc_debug_logs" {
 
   # Optional: Increase capture interval to reduce volume (60 or 600 seconds)
   max_aggregation_interval = 600
+
+  # Ensure the Flow Log is destroyed BEFORE the log group
+  depends_on = [aws_cloudwatch_log_group.flow_log_group]
 }
 
 # CloudWatch Log Group
