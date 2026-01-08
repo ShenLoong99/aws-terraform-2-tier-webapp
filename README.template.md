@@ -113,12 +113,27 @@
 <div align="right"><a href="#readme-top">↑ Back to Top</a></div>
 
 <h2 id="architecture">Architecture</h2>
-<p>The system is deployed into a custom VPC with multiple availability zones. The web tier is protected by an Auto Scaling Group that monitors CPU utilization, while the data tier resides in a private subnet with a Standby instance for failover.</p>
+<img src="assets/aws-terraform-2-tier-webapp.jpg" alt="architecture-diagram" /><br>
+<p>The system is deployed into a custom VPC spanning two Availability Zones (<code>ap-southeast-1a/b</code>) to ensure high availability. The <strong>Web Tier</strong> is managed by an Auto Scaling Group (ASG) and distributed by an Application Load Balancer (ALB), while the <strong>Data Tier</strong> is strictly isolated in private subnets with restricted ingress.</p>
 <ol>
-   <li><strong>Client Request:</strong> Users access the Web Server via Public IPs (or an ALB).</li>
-   <li><strong>Auto Scaling:</strong> The ASG maintains a desired capacity of 2 instances, scaling up if CPU load exceeds 50%.</li>
-   <li><strong>Log Aggregation:</strong> The CloudWatch Agent fetches its <code>ssm:AmazonCloudWatch-linux-webapp</code> config to stream <code>/var/log/cloud-init-output.log</code> to CloudWatch.</li>
-   <li><strong>Data Persistence:</strong> Node.js connects to the RDS MySQL endpoint using secure environment variables.</li>
+   <li>
+      <strong>Client Ingress & Routing:</strong> Traffic enters via the <strong>Internet Gateway (IGW)</strong> and is intercepted by the <strong>Application Load Balancer</strong>. The ALB acts as the single entry point, offloading SSL (if configured) and performing health checks to ensure traffic only reaches healthy EC2 nodes.
+   </li>
+   <li>
+      <strong>Elastic Compute & Scaling:</strong> The ASG maintains a minimum of 2 instances. It utilizes a <strong>Target Group</strong> to seamlessly register/deregister instances during scaling events or failovers, ensuring zero-downtime deployments.
+   </li>
+   <li>
+      <strong>Multi-Layered Observability:</strong> 
+      <ul>
+         <li><strong>Host Level:</strong> The CloudWatch Agent retrieves its <code>ssm:AmazonCloudWatch-linux-webapp</code> configuration to stream <code>/var/log/cloud-init-output.log</code> and application logs.</li>
+         <li><strong>Network Level:</strong> <strong>VPC Flow Logs</strong> capture all IP traffic metadata to monitor for rejected connection attempts.</li>
+         <li><strong>Access Level:</strong> <strong>ALB Access Logs</strong> are archived in <strong>Amazon S3</strong> for long-term auditability and traffic pattern analysis.</li>
+      </ul>
+   </li>
+   <li>
+      <strong>Secure Data Persistence:</strong> The Node.js application communicates with the <strong>RDS MySQL</strong> instance located in the Private Subnets. Security Groups are configured using <strong>Security Group Referencing</strong> (allowing 3306 ONLY from the Web Security Group), ensuring the database is never exposed to the public internet.
+   </li>
+   
 </ol>
 <div align="right"><a href="#readme-top">↑ Back to Top</a></div>
 
@@ -204,7 +219,7 @@ export AWS_SECRET_ACCESS_KEY=&lt;your-aws-secret-access-key&gt;
 
 <h3>Deployment</h3>
 <ol>
-  <li>Set your email address to register QuickSight account:
+  <li>Set your database password to create an RDS database:
     <pre>Terraform Local: enter git bash command below
 export TF_VAR_db_password=&lt;YourSuperSecurePassword123&gt;
 Terraform Cloud: 
@@ -227,6 +242,10 @@ Configure TF_VAR_db_password environment variables in workspace</pre>
          <img src="assets/asg-provisioned.png" alt="asg-provisioned"  />
       </li>
     </ul>
+  </li>
+  <li>
+    <strong>Note:</strong> To maintain AWS Free Tier eligibility, Multi-AZ is disabled in <code>modules\rds\main.tf</code>. In a production environment, <code>multi_az</code> would be set to <code>true</code> to provision a standby instance across Availability Zones as shown in the architecture diagram<br>
+    <img src="assets/multi-az-false.png" alt="multi-az-false" />
   </li>
 </ol>
 
@@ -311,6 +330,7 @@ Configure TF_VAR_db_password environment variables in workspace</pre>
 
 <h3>🛠️ Advanced Debugging Tips</h3>
 <p>If the application is not responding or you notice issues with the initial setup, SSH into an instance and use these commands to diagnose the root cause.</p>
+<p> <strong>⚠️ IMPORTANT: Ensure you are operating in your Local Terminal linked to the Terraform Cloud Workspace before proceeding with these commands.</strong> </p>
 <ol>
    <li>
       <h4>Connecting to the Instance</h4>
