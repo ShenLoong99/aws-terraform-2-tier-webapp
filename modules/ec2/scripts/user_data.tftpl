@@ -16,6 +16,8 @@ const os = require('os');
 const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// This tells Express to serve files from the 'assets' directory
+app.use('/assets', express.json(), express.static('/home/ec2-user/app/assets'));
 
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -51,7 +53,9 @@ const getLayout = () => `
 <html>
 <head>
     <title>To Do List</title>
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         .completed-task { text-decoration: line-through; color: #adb5bd; font-style: italic; }
         .card { border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border:none; }
@@ -66,7 +70,7 @@ const getLayout = () => `
             <h4 class="mb-4">To Do List</h4>
             <div class="input-group mb-4">
                 <input type="text" id="taskInput" class="form-control" placeholder="What needs to be done?">
-                <button onclick="addTask()" class="btn btn-primary px-4">Add Task</button>
+                <button onclick="addTask()" class="btn btn-primary px-4"><i class="bi bi-plus-lg"></i></button>
             </div>
             <div id="taskList"><p class="text-center text-muted">Loading tasks...</p></div>
         </div>
@@ -86,8 +90,8 @@ const getLayout = () => `
                     <div class="d-flex justify-content-between align-items-center border-bottom py-3 task-row">
                         <span class="\$${t.completed ? 'completed-task' : ''} fs-5 ms-2">\$${t.name}</span>
                         <div class="me-2">
-                            \$${!t.completed ? \`<button onclick="doneTask(\$${t.id})" class="btn btn-sm btn-success me-2">Complete</button>\` : ''}
-                            <button onclick="deleteTask(\$${t.id})" class="btn btn-sm btn-outline-danger">Delete</button>
+                            \$${!t.completed ? \`<button onclick="doneTask(\$${t.id})" class="btn btn-sm btn-success me-2"><i class="bi bi-check-lg"></i></button>\` : ''}
+                            <button onclick="deleteTask(\$${t.id})" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                         </div>
                     </div>\`).join('');
             } catch (e) { console.error("Load failed", e); }
@@ -138,7 +142,11 @@ app.delete('/api/tasks/:id', (req, res) => {
     db.query('DELETE FROM items WHERE id = ?', [req.params.id], () => res.sendStatus(200));
 });
 
-app.listen(3000);
+const server = app.listen(3000, () => {
+    console.log('Server is running');
+});
+server.keepAliveTimeout = 65000;
+server.headersTimeout = 66000;
 EOF
 
 # Create Systemd Service
