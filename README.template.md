@@ -9,7 +9,12 @@
 
 <div align="center">
    <h1 align="center">🚀 High-Availability Two-Tier WebApp</h1>
-   <p align="center"> <strong>A Resilient Node.js Application with Automated Scaling and Real-Time Observability</strong> <br /> <a href="#about-the-project"><strong>Explore the docs »</strong></a> </p>
+   <p align="center"> 
+      <img src="assets/cover-image.png" alt="cover-image" width="800" /> <br>
+      <img src="assets/to-do-list-served-server-0.png" alt="website" width="800" /> <br>
+      <strong>A Resilient Node.js Application with Automated Scaling and Real-Time Observability</strong> <br /> 
+      <a href="#about-the-project"><strong>Explore the docs »</strong></a> 
+   </p>
 </div>
 
 <details>
@@ -219,7 +224,7 @@ Configure TF_VAR_db_password environment variables in workspace</pre>
       </li>
       <li>
          Wait for the ASG to provision the instances. Note: The <strong>Health Check Grace Period</strong> (300s) may cause a slight delay in instance readiness.<br>
-         <img src="assets/asg-provisioned.png" alt="asg-provisioned" width="800" />
+         <img src="assets/asg-provisioned.png" alt="asg-provisioned"  />
       </li>
     </ul>
   </li>
@@ -234,11 +239,11 @@ Configure TF_VAR_db_password environment variables in workspace</pre>
       <ol>
          <li>
             <strong>Access the App:</strong> Copy the Public IP of any running instance (or the Load Balancer DNS if applicable) and paste it into your browser at port 3000.<br>
-            <img src="assets/to-do-list-served-server-0.png" alt="to-do-list-served-server-0" width="800" />
+            <img src="assets/to-do-list-served-server-0.png" alt="to-do-list-served-server-0"  />
          </li>
          <li>
             <strong>Add an Item:</strong> Type a task (e.g., "Setup CloudWatch Alarms") in the input box and click Add. Verify the item appears in the list.<br>
-            <img src="assets/to-do-list-crud.png" alt="to-do-list-crud" width="800" />
+            <img src="assets/to-do-list-crud.png" alt="to-do-list-crud"  />
          </li>
          <li><strong>Mark Complete:</strong> Click the Complete button. The item should move or change status, confirming a <code>PUT</code> request to the RDS MySQL backend.</li>
          <li><strong>Delete an Item:</strong> Click <strong>Delete</strong>. Verify the item is removed from the UI and the database via a <code>DELETE</code> request.</li>
@@ -253,7 +258,7 @@ Configure TF_VAR_db_password environment variables in workspace</pre>
          </li>
          <li>
             <strong>Refresh the Browser:</strong> By performing refresh repeatedly, you will notice the Server ID toggle between the two instances in the Auto Scaling Group.<br>
-            <img src="assets/to-do-list-served-server-1.png" alt="to-do-list-served-server-0" width="800" />
+            <img src="assets/to-do-list-served-server-1.png" alt="to-do-list-served-server-0"  />
          </li>
          <li><strong>The Significance:</strong> This confirms that the ALB is successfully distributing ingress traffic across multiple Availability Zones. It also demonstrates that the application state is correctly decoupled; despite switching between different backend servers, the To-Do List data remains consistent because both instances are connected to the same central RDS MySQL database.</li>
       </ol>
@@ -275,30 +280,30 @@ Configure TF_VAR_db_password environment variables in workspace</pre>
          </li>
          <li>
             <strong>Inspect Logs:</strong> Follow the folder path: <code>AWSLogs/ &lt;ACCOUNT_ID&gt; /elasticloadbalancing/ &lt;REGION&gt; /</code>.<br>
-            <img src="assets/alb-s3-access-logs.png" alt="alb-s3-access-logs" width="800" />
+            <img src="assets/alb-s3-access-logs.png" alt="alb-s3-access-logs"  />
          </li>
          <li>
             <strong>Download the file:</strong> Extract it and view it in notepad<br>
-            <img src="assets/alb-s3-access-logs-output.png" alt="alb-s3-access-logs-output" width="800" />
+            <img src="assets/alb-s3-access-logs-output.png" alt="alb-s3-access-logs-output"  />
          </li>
       </ol>
    </li>
    <li>
       <h3>CloudWatch Log Verification</h3>
-      <h4>Analyzing Security Group Effectiveness<h4>
+      <h4>Analyzing Security Group Effectiveness</h4>
       <ol>
          <li><strong>Generate a "Reject" Event:</strong> Attempt to SSH into your RDS database directly from your home computer. Since the RDS is in a private subnet, this connection will time out.</li>
          <li><strong>Verify in CloudWatch:</strong> Navigate to <strong>CloudWatch > Log Groups ></strong> <code>/aws/vpc/flow-logs-debug</code>.</li>
          <li>
             <strong>Search for Rejections:</strong> Look for logs where the <code>action</code> is <code>REJECT</code>. This confirms that your <strong>Security Group "Least Privilege"</strong> rules are actively blocking unauthorized external traffic.<br>
-            <img src="assets/vpc-flow-logs-cloudwatch.png" alt="vpc-flow-logs-cloudwatch" width="800" />
+            <img src="assets/vpc-flow-logs-cloudwatch.png" alt="vpc-flow-logs-cloudwatch"  />
          </li>
       </ol>
-      <h4>EC2 user data bootstrap log<h4>
+      <h4>EC2 user data bootstrap log</h4>
       <ul>
          <li>
             Search for the log group <code>/aws/ec2/webapp-logs</code>. Note that logs are organized by Instance ID, allowing you to track logs even after the instance that created them has been terminated.<br>
-            <img src="assets/ec2-cloudwatch-logs.png" alt="ec2-cloudwatch-logs" width="800" />
+            <img src="assets/ec2-cloudwatch-logs.png" alt="ec2-cloudwatch-logs"  />
          </li>
       </ul>
    </li>
