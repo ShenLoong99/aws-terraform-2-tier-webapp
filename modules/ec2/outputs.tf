@@ -1,9 +1,9 @@
 output "public_ips" {
-  description = "Public IP addresses of the EC2 instances"
-  value       = aws_instance.app_server[*].public_ip
+  description = "Public IP addresses of the ASG instances"
+  value       = data.aws_instances.asg_instances.public_ips
 }
 
 output "instance_ids" {
-  description = "IDs of the EC2 instances"
-  value       = aws_instance.app_server[*].id
+  description = "IDs of the ASG instances"
+  value       = data.aws_instances.asg_instances.ids
 }
