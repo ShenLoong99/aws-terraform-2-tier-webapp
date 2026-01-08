@@ -140,7 +140,7 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 
 # CloudWatch Log Group for EC2 Application Logs
 resource "aws_cloudwatch_log_group" "app_log_group" {
-  name              = "/aws/ec2/webapp-logs-v2"
+  name              = "/aws/ec2/webapp-logs"
   retention_in_days = 7 # Cost-optimized: 7 days is usually enough for dev/test
 
   # For absolute lowest cost, use INFREQUENT_ACCESS if your region supports it

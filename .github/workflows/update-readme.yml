@@ -1,0 +1,32 @@
+name: Update Dynamic README
+
+on:
+  push:
+    branches: [ main, master ] # Triggers on either main or master
+  workflow_dispatch:           # Allows you to run it manually for testing
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Inject Repo Name
+        run: |
+          # Uses sed to replace {{REPO_NAME}} with the actual owner/repo
+          sed "s|{{REPO_NAME}}|${{ github.repository }}|g" README.template.md > README.md
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          
+          # Only commit if there are actually changes to avoid errors
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "docs: sync readme with current repository path"
+            git push
+          fi
