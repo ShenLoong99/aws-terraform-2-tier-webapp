@@ -140,5 +140,7 @@ app.delete('/api/tasks/:id', (req, res) => {
 const server = app.listen(3000, () => {
     console.log('Server is running');
 });
+
+// These MUST be larger than the ALB Idle Timeout (default 60s)
 server.keepAliveTimeout = 65000;
 server.headersTimeout = 66000;

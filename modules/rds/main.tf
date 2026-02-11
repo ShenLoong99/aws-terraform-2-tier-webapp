@@ -1,3 +1,4 @@
+# Subnet group for RDS MySQL instance
 resource "aws_db_subnet_group" "rds_subnet_group" {
   name       = var.aws_db_subnet_group_name
   subnet_ids = var.private_subnet_ids
@@ -7,6 +8,7 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
   }
 }
 
+# RDS MySQL Database Instance
 resource "aws_db_instance" "mysql" {
   # checkov:skip=CKV_AWS_118:Enhanced monitoring is disabled to simplify IAM management and stay within CloudWatch free ingestion limits for this dev environment.
   # checkov:skip=CKV_AWS_293:Deletion protection is disabled to allow for easy cleanup and cost management via 'terraform destroy' in this development environment.
