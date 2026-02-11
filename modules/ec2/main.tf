@@ -89,7 +89,7 @@ resource "aws_autoscaling_group" "app_asg" {
 
   launch_template {
     id      = aws_launch_template.app_lt.id
-    version = aws_launch_template.app_lt.latest_version
+    version = "$Latest" # Always use the latest version generated
   }
 
   health_check_type         = "ELB"
