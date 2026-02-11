@@ -647,7 +647,7 @@ This section is automatically updated with the latest infrastructure details.
    </thead>
    <tbody>
       <tr>
-         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_AWS-Well-Architected-Tool_48.svg" width="40"/>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_AWS-Well-Architected-Tool_48.svg" alt="operation-excellence" width="45" height="45" /><br>
             <strong>Operational Excellence</strong>
          </td>
          <td>
@@ -660,7 +660,7 @@ This section is automatically updated with the latest infrastructure details.
          </td>
       </tr>
       <tr>
-         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Security-Identity-Compliance/48/Arch_AWS-Identity-and-Access-Management_48.svg" width="40"/>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Security-Identity-Compliance/48/Arch_AWS-Identity-and-Access-Management_48.svg"  alt="security" width="45" height="45" /><br>
             <strong>Security</strong>
          </td>
          <td>
@@ -672,7 +672,7 @@ This section is automatically updated with the latest infrastructure details.
          </td>
       </tr>
       <tr>
-         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_Amazon-CloudWatch_48.svg" width="40"/>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_Amazon-CloudWatch_48.svg" alt="reliability" width="45" height="45" /><br>
             <strong>Reliability & Failure Design</strong>
          </td>
          <td>
@@ -684,7 +684,7 @@ This section is automatically updated with the latest infrastructure details.
          </td>
       </tr>
       <tr>
-         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Compute/48/Arch_Amazon-EC2_48.svg" width="40"/>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Compute/48/Arch_Amazon-EC2_48.svg" alt="performance" width="45" height="45" /><br>
             <strong>Performance Efficiency</strong>
          </td>
          <td>
@@ -696,7 +696,7 @@ This section is automatically updated with the latest infrastructure details.
          </td>
       </tr>
       <tr>
-         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_Amazon-CloudWatch_48.svg" width="40"/>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_Amazon-CloudWatch_48.svg" alt="cost-optimization" width="45" height="45" /><br>
             <strong>Cost Optimization</strong>
          </td>
          <td>
@@ -708,7 +708,7 @@ This section is automatically updated with the latest infrastructure details.
          </td>
       </tr>
       <tr>
-         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Sustainability/48/Arch_AWS-Sustainability_48.svg" width="40"/>
+         <td align="center">
             <strong>Sustainability</strong>
          </td>
          <td>
