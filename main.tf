@@ -26,7 +26,6 @@ module "rds" {
   private_subnet_ids = module.vpc.private_subnet_ids
   rds_sg_id          = module.security_groups.rds_sg_id
   db_password        = var.db_password
-  db_instance_class  = "db.${var.instance_type}"
 }
 
 # Application Load Balancer Module
@@ -35,6 +34,7 @@ module "alb" {
   vpc_id            = module.vpc.vpc_id
   public_subnet_ids = module.vpc.public_subnet_ids
   alb_sg_id         = module.security_groups.alb_sg_id
+  enable_alb        = var.enable_alb
 }
 
 # EC2 Instances Module
@@ -51,6 +51,7 @@ module "ec2" {
   db_host           = module.rds.db_host
   db_port           = module.rds.db_port
   db_password       = var.db_password
+  enable_alb        = var.enable_alb
 }
 
 # Generate a secure Private Key

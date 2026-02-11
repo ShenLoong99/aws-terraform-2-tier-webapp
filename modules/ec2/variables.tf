@@ -48,3 +48,8 @@ variable "db_port" {
   description = "Database port"
   type        = number
 }
+
+variable "enable_alb" {
+  description = "Toggle to enable/disable ALB to save costs"
+  type        = bool
+}

@@ -11,7 +11,8 @@ resource "aws_db_instance" "mysql" {
   # checkov:skip=CKV_AWS_118:Enhanced monitoring is disabled to simplify IAM management and stay within CloudWatch free ingestion limits for this dev environment.
   # checkov:skip=CKV_AWS_293:Deletion protection is disabled to allow for easy cleanup and cost management via 'terraform destroy' in this development environment.
   # checkov:skip=CKV_AWS_161:IAM Authentication is disabled to keep the application code simple. Credentials are currently passed via variables, with a plan to migrate to AWS Secrets Manager in the next iteration.
-  allocated_storage               = 20
+  allocated_storage               = var.allocated_storage
+  max_allocated_storage           = 0 # DISABLE AUTOSCALING ---
   engine                          = var.engine
   engine_version                  = "8.0"
   instance_class                  = var.db_instance_class
@@ -25,6 +26,5 @@ resource "aws_db_instance" "mysql" {
   storage_encrypted               = true                              # Always enable encryption
   enabled_cloudwatch_logs_exports = ["error", "general", "slowquery"] # Monitor these logs
   copy_tags_to_snapshot           = true                              # Keep tags on snapshots
-  # multi_az               = true # For production, consider enabling Multi-AZ
-  multi_az = false # Disabled for cost-saving in dev/test
+  multi_az                        = false                             # Disabled for cost-saving in dev/test
 }

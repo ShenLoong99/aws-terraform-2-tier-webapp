@@ -65,13 +65,15 @@ resource "aws_launch_template" "app_lt" {
 
 # Auto Scaling Group to manage EC2 Instances
 resource "aws_autoscaling_group" "app_asg" {
-  name              = "webapp-asg"
-  desired_capacity  = 2
-  max_size          = 2 # Keeps you within Free Tier limits
-  min_size          = 1
-  target_group_arns = [var.target_group_arn] # Attaches to your Load Balancer
-  # This line controls the distribution across AZs
-  vpc_zone_identifier = var.public_subnet_ids
+  name = "webapp-asg"
+  # Change to 1 for minimal Free Tier usage
+  desired_capacity = 1
+  max_size         = 1
+  min_size         = 1
+
+  vpc_zone_identifier = var.public_subnet_ids # Move to public subnet for direct access
+  # Conditionally attach to ALB only if ALB exists
+  target_group_arns = var.enable_alb ? [var.target_group_arn] : []
 
   launch_template {
     id      = aws_launch_template.app_lt.id

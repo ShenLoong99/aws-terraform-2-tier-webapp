@@ -1,4 +1,5 @@
 resource "aws_lb" "application_lb" {
+  count                      = var.enable_alb ? 1 : 0 # Create 1 if true, 0 if false
   name                       = var.aws_lb_name
   internal                   = false
   load_balancer_type         = "application"
@@ -42,7 +43,8 @@ resource "aws_lb_target_group" "app_tg" {
 
 resource "aws_lb_listener" "http" {
   # checkov:skip=CKV_AWS_103:TLS policy is not applicable to HTTP listeners.
-  load_balancer_arn = aws_lb.application_lb.arn
+  count             = var.enable_alb ? 1 : 0 # --- TOGGLE ---
+  load_balancer_arn = aws_lb.application_lb[0].arn
   port              = "80"
   protocol          = "HTTP"
 

@@ -1,4 +1,4 @@
-variable "region" {
+variable "aws_region" {
   description = "AWS region to deploy resources in"
   type        = string
   default     = "us-east-1"
@@ -38,4 +38,10 @@ variable "instance_type" {
   description = "EC2 instance type"
   type        = string
   default     = "t3.micro"
+}
+
+variable "enable_alb" {
+  description = "Set to false to destroy the ALB and stay in Free Tier ($0/mo)"
+  type        = bool
+  default     = false # Default to false for cost savings
 }

@@ -18,3 +18,8 @@ variable "aws_lb_name" {
   type        = string
   default     = "webapp-2-tier-alb"
 }
+
+variable "enable_alb" {
+  description = "Toggle to enable/disable ALB to save costs (ALB ~ $20/mo)"
+  type        = bool
+}

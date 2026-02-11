@@ -41,10 +41,17 @@ variable "username" {
 variable "db_instance_class" {
   description = "The instance type of the RDS database"
   type        = string
+  default     = "db.t3.micro"
 }
 
 variable "aws_db_subnet_group_tags" {
   description = "Tags for the DB subnet group"
   type        = map(string)
   default     = { Name = "My DB Subnet Group" }
+}
+
+variable "allocated_storage" {
+  description = "The allocated storage in gigabytes"
+  type        = number
+  default     = 20
 }
