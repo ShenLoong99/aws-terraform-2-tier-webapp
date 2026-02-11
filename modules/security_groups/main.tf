@@ -82,16 +82,3 @@ resource "aws_security_group" "rds_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
-
-# Default Security Group (Deny All)
-resource "aws_default_security_group" "default" {
-  # checkov:skip=CKV2_AWS_5:This security group is attached to a resource in another module. Checkov fails to detect the cross-module attachment.
-  vpc_id = var.vpc_id
-
-  # Leaving ingress/egress empty effectively denies all traffic
-  # to/from anything accidentally associated with this group.
-
-  tags = {
-    Name = "default-sg-restricted"
-  }
-}

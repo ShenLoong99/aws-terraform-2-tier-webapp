@@ -8,6 +8,18 @@ resource "aws_vpc" "main" {
   tags                 = { Name = "webapp-2-tier-vpc" }
 }
 
+# Default Security Group (Deny All)
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.main.id
+
+  # Leaving ingress/egress empty effectively denies all traffic
+  # to/from anything accidentally associated with this group.
+
+  tags = {
+    Name = "default-sg-restricted"
+  }
+}
+
 # The Internet Gateway
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.main.id
@@ -109,9 +121,8 @@ resource "aws_iam_role_policy" "flow_log_policy" {
         }
       },
       {
-        # Statement B: Actions that REQUIRE wildcard (Finding/Creating the Group)
+        # Statement B: Discovery actions (Read-only)
         Action = [
-          "logs:CreateLogGroup",
           "logs:DescribeLogGroups"
         ]
         Effect   = "Allow"

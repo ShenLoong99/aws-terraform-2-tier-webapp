@@ -10,6 +10,9 @@ skip-check:
   # RDS-specific skips
   - CKV_AWS_157 # Ensure that RDS instances have Multi-AZ enabled (Doubles cost)
 
+  # SSM-specific skips
+  - CKV_AWS_337 # Ensure SSM parameters are using KMS CMK (Using default AWS managed key (alias/aws/ssm) to maintain Free Tier eligibility)
+
   # Security group-specific skips
   - CKV_AWS_382 # Ensure no security groups allow egress from 0.0.0.0:0 to port -1 (Unrestricted egress allowed for ALB to ensure reliable health check communication with backend instances across various ports)
 
