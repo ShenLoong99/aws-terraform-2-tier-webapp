@@ -133,7 +133,28 @@
    <li>
       <strong>Secure Data Persistence:</strong> The Node.js application communicates with the <strong>RDS MySQL</strong> instance located in the Private Subnets. Security Groups are configured using <strong>Security Group Referencing</strong> (allowing 3306 ONLY from the Web Security Group), ensuring the database is never exposed to the public internet.
    </li>
-
+   <li>
+      <strong>The Logging & Auditing Ecosystem:</strong>
+      <ul>
+         <li><strong>S3 Bucket (ALB Access Logs):</strong> Every request hitting the Load Balancer is logged into a dedicated <strong>Amazon S3</strong> bucket. This provides a durable audit trail of client IPs, request paths, and response latencies, crucial for compliance and traffic analysis.</li>
+         <li>
+            <strong>CloudWatch (System & Network):</strong> 
+            <ul>
+               <li><strong>Host Level:</strong> EC2 instances stream <code>/var/log/cloud-init-output.log</code> and application logs to <strong>CloudWatch Logs</strong>.</li>
+               <li><strong>Network Level:</strong> <strong>VPC Flow Logs</strong> capture all IP traffic metadata to monitor for rejected connection attempts.</li>
+            </ul>
+         </li>
+      </ul>
+   </li>
+   <li>
+      <strong>IAM Roles & Security Governance:</strong> 
+      <p>Logging functionality is enabled through an <strong>IAM Instance Profile</strong> attached to the EC2 instances. This role follows the <strong>Principle of Least Privilege</strong>, granting specific permissions to:</p>
+      <ul>
+         <li>Retrieve configurations from <strong>SSM Parameter Store</strong>.</li>
+         <li>Write log streams to <strong>CloudWatch</strong> via the <code>CloudWatchAgentServerPolicy</code>.</li>
+         <li>Allow the ALB service principal to write access logs to the <strong>S3 Bucket</strong> via a bucket policy.</li>
+      </ul>
+   </li>
 </ol>
 <div align="right"><a href="#readme-top">↑ Back to Top</a></div>
 
