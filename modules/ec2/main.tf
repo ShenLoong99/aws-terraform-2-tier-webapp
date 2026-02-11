@@ -89,7 +89,7 @@ resource "aws_autoscaling_group" "app_asg" {
 
   launch_template {
     id      = aws_launch_template.app_lt.id
-    version = aws_launch_template.app_lt.latest_version
+    version = aws_launch_template.app_lt.latest_version # Always use the latest version generated
   }
 
   health_check_type         = "ELB"
@@ -102,6 +102,7 @@ resource "aws_autoscaling_group" "app_asg" {
       # Keep at least 1 instance running at all times (50% of 2)
       min_healthy_percentage = 50
     }
+    triggers = ["tag"] # Optional: specific triggers
   }
 
   # Ensures replacement instances are created before old ones are deleted
