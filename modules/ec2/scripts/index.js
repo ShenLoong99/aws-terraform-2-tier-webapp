@@ -1,48 +1,46 @@
-console.log("Checking DB Config:", {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    db: process.env.DB_NAME
-});
-
-const express = require('express');
-const mysql = require('mysql2');
-const bodyParser = require('body-parser');
-const os = require('os');
+require("dotenv").config();
+const express = require("express");
+const mysql = require("mysql2");
+const bodyParser = require("body-parser");
+const os = require("os");
 
 const app = express();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // This tells Express to serve files from the 'assets' directory
-app.use('/assets', express.json(), express.static('/home/ec2-user/app/assets'));
+app.use("/assets", express.json(), express.static("/home/ec2-user/app/assets"));
 
 const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
 });
 
 // Handle connection errors so the app doesn't crash if RDS is slow to respond
-db.on('error', (err) => {
-    console.error('Database error:', err);
+db.on("error", (err) => {
+  console.error("Database error:", err);
 });
 
 // Robust Initialization: Step 1 - Create table
-db.query(`CREATE TABLE IF NOT EXISTS items (
+db.query(
+  `CREATE TABLE IF NOT EXISTS items (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     completed TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)`, (err) => {
+)`,
+  (err) => {
     if (err) return console.error("Table Init Error:", err);
 
     // Step 2 - Add 'completed' column if it's missing (Version-safe way)
     db.query(`SHOW COLUMNS FROM items LIKE 'completed'`, (err, rows) => {
-        if (!err && rows.length === 0) {
-            db.query(`ALTER TABLE items ADD COLUMN completed TINYINT(1) DEFAULT 0`);
-        }
+      if (!err && rows.length === 0) {
+        db.query(`ALTER TABLE items ADD COLUMN completed TINYINT(1) DEFAULT 0`);
+      }
     });
-});
+  },
+);
 
 const getLayout = () => `
 <!DOCTYPE html>
@@ -84,9 +82,9 @@ const getLayout = () => `
                 }
                 list.innerHTML = tasks.map(t => \`
                     <div class="d-flex justify-content-between align-items-center border-bottom py-3 task-row">
-                        <span class="\$${t.completed ? 'completed-task' : ''} fs-5 ms-2">\$${t.name}</span>
+                        <span class="\$${t.completed ? "completed-task" : ""} fs-5 ms-2">\$${t.name}</span>
                         <div class="me-2">
-                            \$${!t.completed ? \`<button onclick="doneTask(\$${t.id})" class="btn btn-sm btn-success me-2"><i class="bi bi-check-lg"></i></button>\` : ''}
+                            \$${!t.completed ? '<button onclick="doneTask(\$${t.id})" class="btn btn-sm btn-success me-2"><i class="bi bi-check-lg"></i></button>' : ""}
                             <button onclick="deleteTask(\$${t.id})" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                         </div>
                     </div>\`).join('');
@@ -117,33 +115,42 @@ const getLayout = () => `
 </body>
 </html>`;
 
-app.get('/', (req, res) => res.send(getLayout()));
+app.get("/", (req, res) => res.send(getLayout()));
 
-app.get('/health', (req, res) => {
-    res.status(200).send('OK');
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
 });
 
-app.get('/api/tasks', (req, res) => {
-    db.query('SELECT * FROM items ORDER BY completed ASC, id DESC', (err, results) => {
-        if (err) return res.status(500).json([]);
-        res.json(results);
-    });
+app.get("/api/tasks", (req, res) => {
+  db.query(
+    "SELECT * FROM items ORDER BY completed ASC, id DESC",
+    (err, results) => {
+      if (err) return res.status(500).json([]);
+      res.json(results);
+    },
+  );
 });
 
-app.post('/api/tasks', (req, res) => {
-    db.query('INSERT INTO items (name) VALUES (?)', [req.body.name], () => res.sendStatus(201));
+app.post("/api/tasks", (req, res) => {
+  db.query("INSERT INTO items (name) VALUES (?)", [req.body.name], () =>
+    res.sendStatus(201),
+  );
 });
 
-app.put('/api/tasks/complete/:id', (req, res) => {
-    db.query('UPDATE items SET completed = 1 WHERE id = ?', [req.params.id], () => res.sendStatus(200));
+app.put("/api/tasks/complete/:id", (req, res) => {
+  db.query("UPDATE items SET completed = 1 WHERE id = ?", [req.params.id], () =>
+    res.sendStatus(200),
+  );
 });
 
-app.delete('/api/tasks/:id', (req, res) => {
-    db.query('DELETE FROM items WHERE id = ?', [req.params.id], () => res.sendStatus(200));
+app.delete("/api/tasks/:id", (req, res) => {
+  db.query("DELETE FROM items WHERE id = ?", [req.params.id], () =>
+    res.sendStatus(200),
+  );
 });
 
 const server = app.listen(3000, () => {
-    console.log('Server is running');
+  console.log("Server is running");
 });
 
 // These MUST be larger than the ALB Idle Timeout (default 60s)
