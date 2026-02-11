@@ -1,0 +1,73 @@
+name: "Update Documentation"
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'README.template.md'
+      - '**.tf'
+      - '.github/workflows/documentation.yml'
+      - '.terraform-docs.yml'
+  workflow_dispatch:
+
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    environment: prod
+    permissions:
+      contents: write
+    steps:
+      - name: Generate Token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.generate_token.outputs.token }} # Use the App token here
+          # Use persist-credentials to ensure the token is available for the push
+          persist-credentials: true
+          # Ensure we check out the actual branch, not a detached HEAD
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      # Build README from Template
+      - name: Generate README from Template
+        run: |
+          sed -e "s|{{REPO_NAME}}|${{ github.event.repository.name }}|g" \
+              -e "s|{{REPO_URL}}|${{ github.event.repository.html_url }}|g" \
+              -e "s|{{GITHUB_USER}}|${{ github.repository_owner }}|g" \
+              README.template.md > README.md
+
+      # Update all modules / root README.md
+      - name: Render terraform docs
+        uses: terraform-docs/gh-actions@v1.4.1
+        with:
+          working-dir: .
+          config-file: .terraform-docs.yml
+          output-file: README.md
+          output-method: inject # This ensures it targets the markers
+
+      # Format README using Prettier
+      - name: Format README
+        run: npx prettier --write README.md
+
+      # Commit and Push with improved error handling
+      - name: Commit and Push Changes
+        run: |
+          sudo chown -R $USER:$USER .
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+          # Stage the root README AND any READMEs found in modules
+          git add README.md
+          git add modules/**/README.md
+
+          if git diff --staged --quiet; then
+            echo "No changes to any README files"
+          else
+            git commit -m "docs: automated technical reference update [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+          fi

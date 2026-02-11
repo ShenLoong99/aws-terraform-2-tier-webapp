@@ -9,11 +9,11 @@
 
 <div align="center">
    <h1 align="center">🚀 High-Availability Two-Tier WebApp</h1>
-   <p align="center"> 
+   <p align="center">
       <img src="assets/cover-image.png" alt="cover-image" width="800" /> <br>
       <img src="assets/to-do-list-served-server-0.png" alt="website" width="800" /> <br>
-      <strong>A Resilient Node.js Application with Automated Scaling and Real-Time Observability</strong> <br /> 
-      <a href="#about-the-project"><strong>Explore the docs »</strong></a> 
+      <strong>A Resilient Node.js Application with Automated Scaling and Real-Time Observability</strong> <br />
+      <a href="#about-the-project"><strong>Explore the docs »</strong></a>
    </p>
 </div>
 
@@ -50,7 +50,7 @@
    <li>
       <h3>Compute & Application Layer</h3>
       <p>
-         <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="nodejs" width="45" height="45" style="margin: 10px;"/> 
+         <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="nodejs" width="45" height="45" style="margin: 10px;"/>
          <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Compute/48/Arch_Amazon-EC2-Auto-Scaling_48.svg" alt="asg" width="45" height="45" style="margin: 10px;"/>
          <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Resource-Icons_01312022/Res_Networking-and-Content-Delivery/Res_48_Light/Res_Elastic-Load-Balancing_Application-Load-Balancer_48_Light.svg" alt="alb" width="45" height="45" style="margin: 10px;"/>
       </p>
@@ -64,7 +64,7 @@
    <li>
       <h3>Data & Networking Tier</h3>
       <p>
-         <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Database/48/Arch_Amazon-RDS_48.svg" alt="rds" width="45" height="45" style="margin: 10px;"/> 
+         <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Database/48/Arch_Amazon-RDS_48.svg" alt="rds" width="45" height="45" style="margin: 10px;"/>
          <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Networking-Content-Delivery/48/Arch_Amazon-Virtual-Private-Cloud_48.svg" alt="vpc" width="45" height="45" style="margin: 10px;"/>
          <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Resource-Icons_01312022/Res_Networking-and-Content-Delivery/Res_48_Light/Res_Amazon-VPC_Internet-Gateway_48_Light.svg" alt="igw" width="45" height="45" style="margin: 10px;"/>
          <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_Amazon-CloudWatch_48.svg" alt="cloudwatch" width="45" height="45" style="margin: 10px;"/>
@@ -123,7 +123,7 @@
       <strong>Elastic Compute & Scaling:</strong> The ASG maintains a minimum of 2 instances. It utilizes a <strong>Target Group</strong> to seamlessly register/deregister instances during scaling events or failovers, ensuring zero-downtime deployments.
    </li>
    <li>
-      <strong>Multi-Layered Observability:</strong> 
+      <strong>Multi-Layered Observability:</strong>
       <ul>
          <li><strong>Host Level:</strong> The CloudWatch Agent retrieves its <code>ssm:AmazonCloudWatch-linux-webapp</code> configuration to stream <code>/var/log/cloud-init-output.log</code> and application logs.</li>
          <li><strong>Network Level:</strong> <strong>VPC Flow Logs</strong> capture all IP traffic metadata to monitor for rejected connection attempts.</li>
@@ -138,7 +138,7 @@
       <ul>
          <li><strong>S3 Bucket (ALB Access Logs):</strong> Every request hitting the Load Balancer is logged into a dedicated <strong>Amazon S3</strong> bucket. This provides a durable audit trail of client IPs, request paths, and response latencies, crucial for compliance and traffic analysis.</li>
          <li>
-            <strong>CloudWatch (System & Network):</strong> 
+            <strong>CloudWatch (System & Network):</strong>
             <ul>
                <li><strong>Host Level:</strong> EC2 instances stream <code>/var/log/cloud-init-output.log</code> and application logs to <strong>CloudWatch Logs</strong>.</li>
                <li><strong>Network Level:</strong> <strong>VPC Flow Logs</strong> capture all IP traffic metadata to monitor for rejected connection attempts.</li>
@@ -147,7 +147,7 @@
       </ul>
    </li>
    <li>
-      <strong>IAM Roles & Security Governance:</strong> 
+      <strong>IAM Roles & Security Governance:</strong>
       <p>Logging functionality is enabled through an <strong>IAM Instance Profile</strong> attached to the EC2 instances. This role follows the <strong>Principle of Least Privilege</strong>, granting specific permissions to:</p>
       <ul>
          <li>Retrieve configurations from <strong>SSM Parameter Store</strong>.</li>
@@ -243,7 +243,7 @@ export AWS_SECRET_ACCESS_KEY=&lt;your-aws-secret-access-key&gt;
   <li>Set your database password to create an RDS database:
     <pre>Terraform Local: enter git bash command below
 export TF_VAR_db_password=&lt;YourSuperSecurePassword123&gt;
-Terraform Cloud: 
+Terraform Cloud:
 Configure TF_VAR_db_password environment variables in workspace</pre>
   </li>
   <li>

@@ -1,5 +1,5 @@
 terraform {
-
+  required_version = ">= 1.5.0"
   backend "remote" {
     hostname     = "app.terraform.io"
     organization = "my-terraform-aws-projects-2025"
@@ -26,13 +26,23 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.0"
     }
+    tls = {
+      source  = "hashicorp/tls"
+      version = "~> 4.0"
+    }
   }
 }
 
 provider "aws" {
-  region = var.region
+  region = var.aws_region
 
   default_tags {
-    tags = local.common_tags
+    tags = {
+      Project     = "Project-5-Two-Tier-WebApp"
+      Environment = "Development"
+      Owner       = "ShenLoong"
+      ManagedBy   = "Terraform"
+      CostCenter  = "Cloud-Learning"
+    }
   }
 }

@@ -1,13 +1,3 @@
-locals {
-  common_tags = {
-    Project     = "Project-5-Two-Tier-WebApp"
-    Environment = "Development"
-    Owner       = "ShenLoong"
-    ManagedBy   = "Terraform"
-    CostCenter  = "Cloud-Learning"
-  }
-}
-
 # Fetch your current public IP address
 data "http" "my_ip" {
   url = "https://ipv4.icanhazip.com"
@@ -36,7 +26,6 @@ module "rds" {
   private_subnet_ids = module.vpc.private_subnet_ids
   rds_sg_id          = module.security_groups.rds_sg_id
   db_password        = var.db_password
-  db_instance_class  = "db.${var.instance_type}"
 }
 
 # Application Load Balancer Module
@@ -49,12 +38,10 @@ module "alb" {
 
 # EC2 Instances Module
 module "ec2" {
-  source = "./modules/ec2"
-  # This is where the variables get their values!
+  source            = "./modules/ec2"
   public_subnet_ids = module.vpc.public_subnet_ids
   ec2_sg_id         = module.security_groups.ec2_sg_id
   target_group_arn  = module.alb.target_group_arn
-  instance_type     = var.instance_type
   key_name          = aws_key_pair.generated_key.key_name
   db_name           = module.rds.db_name
   db_username       = module.rds.db_username

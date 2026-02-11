@@ -1,0 +1,34 @@
+# Use this to skip checks that incur high costs or break Free Tier eligibility
+skip-check:
+  # ELB-specific skips
+  - CKV_AWS_150 # Ensure that Load Balancer has deletion protection enabled (Not necessary)
+  - CKV_AWS_2 # Ensure ALB protocol is HTTPS (Using HTTP to save cost on SSL certificates)
+  - CKV2_AWS_28 # Ensure public facing ALB are protected by WAF (WAF incurs cost)
+  - CKV_AWS_378 # Ensure AWS Load Balancer doesn't use HTTP protocol (Using HTTP to save cost on SSL certificates)
+  - CKV2_AWS_20 # Ensure that ALB redirects HTTP requests into HTTPS ones (HTTPS redirect requires a custom domain and ACM certificate, which are excluded to maintain a zero-cost environment)
+  - CKV_AWS_91 # Ensure the ELBv2 (Application/Network) has access logging enabled (Access logging incurs S3 storage costs)
+
+  # RDS-specific skips
+  - CKV_AWS_157 # Ensure that RDS instances have Multi-AZ enabled (Doubles cost)
+
+  # SSM-specific skips
+  - CKV_AWS_337 # Ensure SSM parameters are using KMS CMK (Using default AWS managed key (alias/aws/ssm) to maintain Free Tier eligibility)
+
+  # Security group-specific skips
+  - CKV_AWS_382 # Ensure no security groups allow egress from 0.0.0.0:0 to port -1 (Unrestricted egress allowed for ALB to ensure reliable health check communication with backend instances across various ports)
+
+  # VPC-specific skips
+  - CKV_AWS_130 # Ensure VPC subnets do not assign public IP by default (Public IP assignment is enabled to allow instances to reach the internet for updates without a NAT Gateway, saving costs)
+
+  # S3-specific skips
+  - CKV_AWS_145 # Ensure that S3 buckets are encrypted with KMS by default (Avoids $1/mo KMS fee)
+  - CKV_AWS_18 # Ensure the S3 bucket has access logging enabled (Saves on request/storage costs)
+  - CKV2_AWS_62 # Ensure S3 buckets should have event notifications enabled (Irrelevant)
+  - CKV_AWS_144 # Ensure that S3 bucket has cross-region replication enabled (Prevents doubling storage costs)
+
+  # Cloudwatch-specific skips
+  - CKV_AWS_158 # Ensure that CloudWatch Log Group is encrypted by KMS (Avoid KMS cost)
+  - CKV_AWS_338 # Ensure CloudWatch log groups retains logs for at least 1 year (Not necessary and save cost)
+
+  # GitHub Action skips
+  - CKV2_GHA_1 # Ensure top-level permissions are not set to write-all (Intentional skip as the workflows requires the permission)

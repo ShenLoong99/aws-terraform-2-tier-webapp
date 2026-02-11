@@ -1,7 +1,7 @@
 # Capture the output from the module blocks
 # ALB Outputs
 output "alb_dns_name" {
-  description = "The DNS name of the load balancer"
+  description = "The DNS name of the ALB (or EC2 IP if ALB is disabled) for CD scripts"
   value       = module.alb.alb_dns_name
 }
 
@@ -56,4 +56,9 @@ output "public_subnet_ids" {
 output "private_subnet_ids" {
   description = "Private subnet IDs"
   value       = module.vpc.private_subnet_ids
+}
+
+output "aws_region" {
+  description = "The AWS region in use"
+  value       = var.aws_region
 }

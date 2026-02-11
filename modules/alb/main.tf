@@ -1,12 +1,10 @@
 resource "aws_lb" "application_lb" {
-  name               = var.aws_lb_name
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [var.alb_sg_id]
-  subnets            = var.public_subnet_ids
-
-  # Enable Cross-Zone Load Balancing
-  enable_cross_zone_load_balancing = true
+  name                       = var.aws_lb_name
+  internal                   = false
+  load_balancer_type         = "application"
+  security_groups            = [var.alb_sg_id]
+  subnets                    = var.public_subnet_ids
+  drop_invalid_header_fields = true
 
   access_logs {
     bucket  = aws_s3_bucket.alb_logs.id
@@ -19,7 +17,6 @@ resource "aws_lb" "application_lb" {
 }
 
 resource "aws_lb_target_group" "app_tg" {
-  # Change 'name' to 'name_prefix'
   name_prefix = "app-tg" # Max 6 characters for prefix
   port        = 3000
   protocol    = "HTTP"
@@ -40,9 +37,13 @@ resource "aws_lb_target_group" "app_tg" {
 }
 
 resource "aws_lb_listener" "http" {
+  # checkov:skip=CKV_AWS_103:TLS policy is not applicable to HTTP listeners.
   load_balancer_arn = aws_lb.application_lb.arn
   port              = "80"
   protocol          = "HTTP"
+
+  # This line only belongs on port 443 listeners
+  # ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
   default_action {
     type             = "forward"
@@ -54,6 +55,24 @@ resource "aws_lb_listener" "http" {
 resource "aws_s3_bucket" "alb_logs" {
   bucket        = "my-alb-debug-logs-${random_id.suffix.hex}"
   force_destroy = true
+}
+
+# Block Public Access
+resource "aws_s3_bucket_public_access_block" "alb_logs_public_access_block" {
+  bucket = aws_s3_bucket.alb_logs.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
+
+# enable versioning
+resource "aws_s3_bucket_versioning" "alb_logs_versioning" {
+  bucket = aws_s3_bucket.alb_logs.id
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 
 # Add the REQUIRED Policy for ap-southeast-1
@@ -88,10 +107,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
     id     = "delete-old-logs"
     status = "Enabled"
 
-    # The filter block must contain either 'prefix' or 'and'
-    filter {
-      prefix = "" # This targets all objects in the bucket
+    # Abort failed uploads after 7 days to save money
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
     }
+
+    # The filter block must contain either 'prefix' or 'and'
+    filter {}
 
     expiration {
       days = 14 # Automatically deletes logs older than 14 days
