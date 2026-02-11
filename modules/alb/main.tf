@@ -41,10 +41,13 @@ resource "aws_lb_target_group" "app_tg" {
 }
 
 resource "aws_lb_listener" "http" {
+  # checkov:skip=CKV_AWS_103:TLS policy is not applicable to HTTP listeners.
   load_balancer_arn = aws_lb.application_lb.arn
   port              = "80"
   protocol          = "HTTP"
-  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
+
+  # This line only belongs on port 443 listeners
+  # ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
   default_action {
     type             = "forward"
@@ -108,10 +111,13 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
     id     = "delete-old-logs"
     status = "Enabled"
 
-    # The filter block must contain either 'prefix' or 'and'
-    filter {
-      prefix = "" # This targets all objects in the bucket
+    # Abort failed uploads after 7 days to save money
+    abort_incomplete_multipart_upload {
+      days_after_initiation = 7
     }
+
+    # The filter block must contain either 'prefix' or 'and'
+    filter {}
 
     expiration {
       days = 14 # Automatically deletes logs older than 14 days

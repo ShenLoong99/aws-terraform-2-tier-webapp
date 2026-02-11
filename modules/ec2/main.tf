@@ -9,6 +9,19 @@ data "aws_ami" "latest_amazon_linux" {
   }
 }
 
+# find all running instances that belong to ASG
+data "aws_instances" "asg_instances" {
+  instance_state_names = ["running"]
+
+  filter {
+    name   = "tag:Name"
+    values = ["ASG-Web-Server"] # Matches the tag in your launch template
+  }
+
+  # Ensures this only runs after the ASG has started creating instances
+  depends_on = [aws_autoscaling_group.app_asg]
+}
+
 # Launch Template and Auto Scaling Group using the Golden AMI
 resource "aws_launch_template" "app_lt" {
   name_prefix   = "webapp-launch-template-"
@@ -16,7 +29,14 @@ resource "aws_launch_template" "app_lt" {
   instance_type = var.instance_type
   key_name      = var.key_name
 
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required" # Forces the use of IMDSv2
+    http_put_response_hop_limit = 1
+  }
+
   # Security Groups are now handled inside network_interfaces for templates
+  # checkov:skip=CKV_AWS_88:Public IP is enabled to avoid NAT Gateway costs ($32/mo). Access is restricted via Security Group to the Admin's specific IP.
   network_interfaces {
     associate_public_ip_address = true
     security_groups             = [var.ec2_sg_id]
@@ -93,19 +113,6 @@ resource "aws_autoscaling_group" "app_asg" {
   }
 }
 
-# find all running instances that belong to ASG
-data "aws_instances" "asg_instances" {
-  instance_state_names = ["running"]
-
-  filter {
-    name   = "tag:Name"
-    values = ["ASG-Web-Server"] # Matches the tag in your launch template
-  }
-
-  # Ensures this only runs after the ASG has started creating instances
-  depends_on = [aws_autoscaling_group.app_asg]
-}
-
 # Create the IAM Role
 resource "aws_iam_role" "ec2_cloudwatch_role" {
   name = "ec2-cloudwatch-role"
@@ -150,7 +157,7 @@ resource "aws_cloudwatch_log_group" "app_log_group" {
 # SSM Parameter to store CloudWatch Agent configuration
 resource "aws_ssm_parameter" "cw_agent_config" {
   name = "AmazonCloudWatch-linux-webapp"
-  type = "String"
+  type = "SecureString"
   value = jsonencode({
     logs = {
       logs_collected = {
