@@ -1,0 +1,29 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.105.0
+    hooks:
+      - id: terraform_fmt       # Ensures consistent spacing/indentation
+        args:
+          - --args=-recursive
+      - id: terraform_validate  # Basic syntax & schema validation
+      - id: terraform_tflint    # Catches AWS provider-specific errors
+        args:
+        - --args=--config=__GIT_WORKING_DIR__/.tflint.hcl
+      - id: terraform_docs      # Automates Technical Reference updates
+
+  - repo: https://github.com/bridgecrewio/checkov
+    rev: 3.2.499 # It is best practice to use a specific stable version
+    hooks:
+      - id: checkov
+        # Optional: You can still pass your custom arguments here
+        args: [
+          "--soft-fail", # Highly recommended for initial setup
+          "--quiet"      # Only show errors to keep your terminal clean
+        ]

@@ -1,0 +1,8 @@
+# Use this to skip checks that incur high costs or break Free Tier eligibility
+skip-check:
+  # Cloudwatch-specific skips
+  - CKV_AWS_158 # Ensure that CloudWatch Log Group is encrypted by KMS (Avoid KMS cost)
+  - CKV_AWS_338 # Ensure CloudWatch log groups retains logs for at least 1 year (Not necessary and save cost)
+
+  # GitHub Action skips
+  - CKV2_GHA_1 # Ensure top-level permissions are not set to write-all (Intentional skip as the workflows requires the permission)
