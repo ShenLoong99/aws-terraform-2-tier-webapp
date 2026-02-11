@@ -41,7 +41,7 @@ module "alb" {
 module "ec2" {
   source = "./modules/ec2"
   # This is where the variables get their values!
-  public_subnet_ids = module.vpc.public_subnet_ids
+  public_subnet_ids = var.enable_alb ? module.vpc.private_subnet_ids : module.vpc.public_subnet_ids
   ec2_sg_id         = module.security_groups.ec2_sg_id
   target_group_arn  = module.alb.target_group_arn
   instance_type     = var.instance_type
