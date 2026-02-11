@@ -1,11 +1,16 @@
-# Fetch the latest Amazon Linux 2 AMI
+# Fetch the latest Amazon Linux 2 AMI (arm64)
 data "aws_ami" "latest_amazon_linux" {
   most_recent = true
   owners      = ["amazon"]
+
   filter {
-    name = "name"
-    # Change "amzn2-ami-hvm-*" to:
-    values = ["al2023-ami-2023*-kernel-6.1-x86_64"]
+    name   = "name"
+    values = ["al2023-ami-2023*-arm64"] # Added -arm64 suffix
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["arm64"] # Explicitly filter for ARM
   }
 }
 
