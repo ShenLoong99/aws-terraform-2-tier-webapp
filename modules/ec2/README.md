@@ -48,4 +48,6 @@ No modules.
 |------|-------------|
 | <a name="output_instance_ids"></a> [instance\_ids](#output\_instance\_ids) | IDs of the ASG instances |
 | <a name="output_public_ips"></a> [public\_ips](#output\_public\_ips) | Public IP addresses of the ASG instances |
+| <a name="output_selected_ami_id"></a> [selected\_ami\_id](#output\_selected\_ami\_id) | The ID of the selected Amazon Linux 2 AMI |
+| <a name="output_selected_ami_name"></a> [selected\_ami\_name](#output\_selected\_ami\_name) | The name of the selected Amazon Linux 2 AMI |
 <!-- END_TF_DOCS -->
