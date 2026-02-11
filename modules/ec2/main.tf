@@ -26,7 +26,7 @@ data "aws_instances" "asg_instances" {
 resource "aws_launch_template" "app_lt" {
   name_prefix   = "webapp-launch-template-"
   image_id      = data.aws_ami.latest_amazon_linux.id
-  instance_type = var.instance_type
+  instance_type = "t4g.nano"
   key_name      = var.key_name
 
   metadata_options {
@@ -42,6 +42,11 @@ resource "aws_launch_template" "app_lt" {
     security_groups             = [var.ec2_sg_id]
   }
 
+  # Use Spot Instances for ~70-90% savings
+  instance_market_options {
+    market_type = "spot"
+  }
+
   iam_instance_profile {
     name = aws_iam_instance_profile.ec2_profile.name
   }
@@ -55,6 +60,10 @@ resource "aws_launch_template" "app_lt" {
     db_port = var.db_port
   }))
 
+  lifecycle {
+    create_before_destroy = true
+  }
+
   tag_specifications {
     resource_type = "instance"
     tags = {
@@ -65,15 +74,12 @@ resource "aws_launch_template" "app_lt" {
 
 # Auto Scaling Group to manage EC2 Instances
 resource "aws_autoscaling_group" "app_asg" {
-  name = "webapp-asg"
-  # Change to 1 for minimal Free Tier usage
-  desired_capacity = 1
-  max_size         = 1
-  min_size         = 1
-
-  vpc_zone_identifier = var.public_subnet_ids # Move to public subnet for direct access
-  # Conditionally attach to ALB only if ALB exists
-  target_group_arns = var.enable_alb ? [var.target_group_arn] : []
+  name                = "webapp-asg"
+  desired_capacity    = 1 # Absolute minimum for cost saving
+  max_size            = 2 # Allow small burst if needed
+  min_size            = 1
+  vpc_zone_identifier = var.public_subnet_ids  # Spans multiple AZs for reliability
+  target_group_arns   = [var.target_group_arn] # Attach to the ALB Target Group
 
   launch_template {
     id      = aws_launch_template.app_lt.id

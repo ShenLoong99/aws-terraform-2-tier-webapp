@@ -1,11 +1,12 @@
 # Use this to skip checks that incur high costs or break Free Tier eligibility
 skip-check:
-  # LB-specific skips
+  # ELB-specific skips
   - CKV_AWS_150 # Ensure that Load Balancer has deletion protection enabled (Not necessary)
   - CKV_AWS_2 # Ensure ALB protocol is HTTPS (Using HTTP to save cost on SSL certificates)
   - CKV2_AWS_28 # Ensure public facing ALB are protected by WAF (WAF incurs cost)
   - CKV_AWS_378 # Ensure AWS Load Balancer doesn't use HTTP protocol (Using HTTP to save cost on SSL certificates)
   - CKV2_AWS_20 # Ensure that ALB redirects HTTP requests into HTTPS ones (HTTPS redirect requires a custom domain and ACM certificate, which are excluded to maintain a zero-cost environment)
+  - CKV_AWS_91 # Ensure the ELBv2 (Application/Network) has access logging enabled (Access logging incurs S3 storage costs)
 
   # RDS-specific skips
   - CKV_AWS_157 # Ensure that RDS instances have Multi-AZ enabled (Doubles cost)

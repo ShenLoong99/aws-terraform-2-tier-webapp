@@ -34,24 +34,20 @@ module "alb" {
   vpc_id            = module.vpc.vpc_id
   public_subnet_ids = module.vpc.public_subnet_ids
   alb_sg_id         = module.security_groups.alb_sg_id
-  enable_alb        = var.enable_alb
 }
 
 # EC2 Instances Module
 module "ec2" {
-  source = "./modules/ec2"
-  # This is where the variables get their values!
-  public_subnet_ids = var.enable_alb ? module.vpc.private_subnet_ids : module.vpc.public_subnet_ids
+  source            = "./modules/ec2"
+  public_subnet_ids = module.vpc.public_subnet_ids
   ec2_sg_id         = module.security_groups.ec2_sg_id
   target_group_arn  = module.alb.target_group_arn
-  instance_type     = var.instance_type
   key_name          = aws_key_pair.generated_key.key_name
   db_name           = module.rds.db_name
   db_username       = module.rds.db_username
   db_host           = module.rds.db_host
   db_port           = module.rds.db_port
   db_password       = var.db_password
-  enable_alb        = var.enable_alb
 }
 
 # Generate a secure Private Key

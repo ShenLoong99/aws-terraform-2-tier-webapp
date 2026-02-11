@@ -13,12 +13,6 @@ variable "target_group_arn" {
   type        = string
 }
 
-variable "instance_type" {
-  description = "The EC2 instance type"
-  type        = string
-  default     = "t3.micro"
-}
-
 variable "key_name" {
   description = "Name of the SSH key pair"
   type        = string
@@ -47,9 +41,4 @@ variable "db_host" {
 variable "db_port" {
   description = "Database port"
   type        = number
-}
-
-variable "enable_alb" {
-  description = "Toggle to enable/disable ALB to save costs"
-  type        = bool
 }

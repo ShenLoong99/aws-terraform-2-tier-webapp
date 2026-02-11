@@ -1,14 +1,8 @@
 # Capture the output from the module blocks
 # ALB Outputs
-output "app_url" {
-  description = "The URL to access the web application"
-  value       = var.enable_alb ? "http://${module.alb.alb_dns_name}" : "ALB Disabled. Access via EC2 Public IP: ${module.ec2.public_ips[0]}"
-}
-
 output "alb_dns_name" {
   description = "The DNS name of the ALB (or EC2 IP if ALB is disabled) for CD scripts"
-  # Logic: If ALB exists, use it. Otherwise, use the first EC2 public IP.
-  value = var.enable_alb ? module.alb.alb_dns_name : module.ec2.public_ips[0]
+  value       = module.alb.alb_dns_name
 }
 
 output "alb_target_group_arn" {
