@@ -274,20 +274,21 @@ This section is automatically updated with the latest infrastructure details.
 
 ## Outputs
 
-| Name                                                                                            | Description                                                           |
-| ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| <a name="output_alb_dns_name"></a> [alb_dns_name](#output_alb_dns_name)                         | The DNS name of the ALB (or EC2 IP if ALB is disabled) for CD scripts |
-| <a name="output_alb_sg_id"></a> [alb_sg_id](#output_alb_sg_id)                                  | Security Group ID of the ALB                                          |
-| <a name="output_alb_target_group_arn"></a> [alb_target_group_arn](#output_alb_target_group_arn) | n/a                                                                   |
-| <a name="output_aws_region"></a> [aws_region](#output_aws_region)                               | The AWS region in use                                                 |
-| <a name="output_ec2_instance_ids"></a> [ec2_instance_ids](#output_ec2_instance_ids)             | IDs from the EC2 module                                               |
-| <a name="output_ec2_public_ips"></a> [ec2_public_ips](#output_ec2_public_ips)                   | Public IP addresses of the EC2 instances                              |
-| <a name="output_ec2_sg_id"></a> [ec2_sg_id](#output_ec2_sg_id)                                  | Security Group ID of the EC2 instances                                |
-| <a name="output_private_subnet_ids"></a> [private_subnet_ids](#output_private_subnet_ids)       | Private subnet IDs                                                    |
-| <a name="output_public_subnet_ids"></a> [public_subnet_ids](#output_public_subnet_ids)          | Public subnet IDs                                                     |
-| <a name="output_rds_endpoint"></a> [rds_endpoint](#output_rds_endpoint)                         | The connection endpoint for the RDS instance                          |
-| <a name="output_rds_sg_id"></a> [rds_sg_id](#output_rds_sg_id)                                  | Security Group ID of the RDS instance                                 |
-| <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id)                                           | VPC ID                                                                |
+| Name                                                                                            | Description                                  |
+| ----------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| <a name="output_alb_dns_name"></a> [alb_dns_name](#output_alb_dns_name)                         | The DNS name of the load balancer            |
+| <a name="output_alb_sg_id"></a> [alb_sg_id](#output_alb_sg_id)                                  | Security Group ID of the ALB                 |
+| <a name="output_alb_target_group_arn"></a> [alb_target_group_arn](#output_alb_target_group_arn) | n/a                                          |
+| <a name="output_app_url"></a> [app_url](#output_app_url)                                        | The clickable URL for the application        |
+| <a name="output_aws_region"></a> [aws_region](#output_aws_region)                               | The AWS region in use                        |
+| <a name="output_ec2_instance_ids"></a> [ec2_instance_ids](#output_ec2_instance_ids)             | IDs from the EC2 module                      |
+| <a name="output_ec2_public_ips"></a> [ec2_public_ips](#output_ec2_public_ips)                   | Public IP addresses of the EC2 instances     |
+| <a name="output_ec2_sg_id"></a> [ec2_sg_id](#output_ec2_sg_id)                                  | Security Group ID of the EC2 instances       |
+| <a name="output_private_subnet_ids"></a> [private_subnet_ids](#output_private_subnet_ids)       | Private subnet IDs                           |
+| <a name="output_public_subnet_ids"></a> [public_subnet_ids](#output_public_subnet_ids)          | Public subnet IDs                            |
+| <a name="output_rds_endpoint"></a> [rds_endpoint](#output_rds_endpoint)                         | The connection endpoint for the RDS instance |
+| <a name="output_rds_sg_id"></a> [rds_sg_id](#output_rds_sg_id)                                  | Security Group ID of the RDS instance        |
+| <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id)                                           | VPC ID                                       |
 
 <!-- END_TF_DOCS -->
 </details>
@@ -299,7 +300,6 @@ This section is automatically updated with the latest infrastructure details.
   <li>AWS Account with Bedrock Claude 3.5 model access enabled.</li>
   <li>Terraform CLI (v1.5.0+) installed locally.</li>
   <li>Terraform Cloud account for remote state management.</li>
-  <li><strong>Set your AWS Region:</strong> Set to whatever <code>aws_region</code> you want in <code>variables.tf</code>.</li>
 </ul>
 
 <h3>Terraform Cloud State Management</h3>
