@@ -1,5 +1,7 @@
 <a id="readme-top"></a>
 
+<div align="center">
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
@@ -7,14 +9,33 @@
 [![Unlicense License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-<div align="center">
-   <h1 align="center">🚀 High-Availability Two-Tier WebApp</h1>
-   <p align="center">
+   <h1>🚀 Two-Tier WebApp</h1>
+   <p>
       <img src="assets/cover-image.png" alt="cover-image" width="800" /> <br>
-      <img src="assets/to-do-list-served-server-0.png" alt="website" width="800" /> <br>
-      <strong>A Resilient Node.js Application with Automated Scaling and Real-Time Observability</strong> <br />
-      <a href="#about-the-project"><strong>Explore the docs »</strong></a>
+      <strong>A Resilient Node.js Application with Automated Scaling and Real-Time Observability</strong>
    </p>
+
+![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" />
+
+<br>
+
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)<br>
+[![Infrastructure CI][ci-shield]][ci-url]
+[![Production Deployment][cd-shield]][cd-url]
+[![Update Documentation][docs-shield]][docs-url]
+
+<br>
+
+![Last Commit](https://img.shields.io/github/last-commit/ShenLoong99/aws-terraform-2-tier-webapp?style=for-the-badge)
+![Repo Size](https://img.shields.io/github/repo-size/ShenLoong99/aws-terraform-2-tier-webapp?style=for-the-badge)
+![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?style=for-the-badge&logo=pre-commit&logoColor=white)
+[![Checkov Security](https://img.shields.io/badge/Checkov-Secured-brightgreen?style=for-the-badge&logo=checkov&logoColor=white)](https://github.com/ShenLoong99/aws-terraform-2-tier-webapp/actions/workflows/ci.yml)
+
+<a href="#about-the-project"><strong>Explore the docs »</strong></a>
+
 </div>
 
 <details>
@@ -25,11 +46,14 @@
       <li><a href="#use-cases">Use Cases</a></li>
       <li><a href="#architecture">Architecture</a></li>
       <li><a href="#file-structure">File Structure</a></li>
+      <li><a href="#technical">Technical Reference</a></li>
       <li><a href="#getting-started">Getting Started</a></li>
-      <li><a href="#usage">Usage & Testing</a></li>
+      <li><a href="#gitops">GitOps & CI/CD Workflow</a></li>
+      <li><a href="#usage">Usage</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
-      <li><a href="#challenges">Challenges</a></li>
-      <li><a href="#cost-optimization">Cost Optimization</a></li>
+      <li><a href="#challenges-faced">Challenges</a></li>
+      <li><a href="#well-architected">Well Architected Framework</a></li>
+      <li><a href="#acknowledgements">Acknowledgements</a></li>
    </ol>
 </details>
 <h2 id="about-the-project">About The Project</h2>
@@ -41,7 +65,10 @@
 <ol>
    <li>
       <h3>Infrastructure as Code (IaC) & Backend</h3>
-      <p><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/terraform/terraform-original.svg" alt="terraform" width="45" height="45" style="margin: 10px;"/></p>
+      <p>
+         <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/terraform/terraform-original.svg" alt="terraform" width="45" height="45" style="margin: 10px;"/>
+      </p>
+      <p></p>
       <ul>
          <li><strong>Terraform & Terraform Cloud:</strong> Orchestrates the entire lifecycle of the AWS resources. State is managed remotely in Terraform Cloud to enable team collaboration and safe state-locking.</li>
          <li><strong>HCL (HashiCorp Configuration Language):</strong> Used to define modular resources (VPC, EC2, RDS) for high reusability.</li>
@@ -160,53 +187,128 @@
 
 <h2 id="file-structure">File Structure</h2>
 <pre>AWS-TERRAFORM-2-TIER-WEBAPP/
-├── 📁 .github/              # GitHub Actions or workflows
-├── 📁 .terraform/           # Terraform working directory
-├── 📁 assets/               # Project documentation and images
-├── 📁 modules/              # Reusable infrastructure modules
-│   ├── 📁 alb/              # Application Load Balancer configuration
-│   ├── 📁 ec2/              # Compute tier configuration
-│   │   ├── 📁 scripts/      # User data and initialization scripts (e.g., user_data.tftpl)
-│   │   ├── main.tf          # EC2 Launch Template and ASG resources [cite: 33]
-│   │   ├── outputs.tf       # EC2-specific output values
-│   │   └── variables.tf     # EC2-specific input variables
+├── 📁 .github/               # GitHub Actions or workflows
+│   └── workflows/             # CI/CD Pipeline Definitions
+│       ├── cd.yml             # Production Deployment
+│       ├── ci.yml             # Terraform PR Insights (Checkov, TFLint, Plan)
+│       └── documentation.yml  # Automated Documentation Sync via terraform-docs
+├── 📁 .terraform/            # Terraform working directory
+├── 📁 assets/                # Project documentation and images
+├── 📁 modules/               # Reusable infrastructure modules
+│   ├── 📁 alb/               # Application Load Balancer configuration
+│   ├── 📁 ec2/               # Compute tier configuration
+│   │   ├── 📁 scripts/       # User data and initialization scripts (e.g., user_data.tftpl)
+│   │   ├── main.tf           # EC2 Launch Template and ASG resources
+│   │   ├── outputs.tf        # EC2-specific output values
+│   │   ├── providers.tf      # Version constraints (No cloud block!)
+│   │   └── variables.tf      # EC2-specific input variables
 │   ├── 📁 rds/              # Managed database configuration
-│   ├── 📁 security_groups/  # Networking security rules
-│   └── 📁 vpc/              # Virtual Private Cloud network setup
-├── .gitignore               # Files excluded from version control
-├── .terraform.lock.hcl      # Provider dependency lock file
-├── main.tf                  # Root module orchestrating all tiers
-├── outputs.tf               # Global output values (e.g., ALB DNS)
-├── project-key.pem          # Private SSH key for EC2 access
-├── providers.tf             # AWS provider and Terraform version config
-├── README.template.md       # Documentation template
-├── terraform.tfstate        # Current state of deployed infrastructure
-├── terraform.tfstate.backup # Previous state backup
-└── variables.tf             # Global input variables
+│   ├── 📁 security_groups/   # Networking security rules
+│   └── 📁 vpc/               # Virtual Private Cloud network setup
+├── 📁 scripts/               # Automation & Validation Scripts
+│   └── verify-deployment.sh   # Post-deployment test script
+├── .gitignore                 # Files excluded from version control
+├── .terraform.lock.hcl        # Provider dependency lock file
+├── .pre-commit-config.yaml    # Local git-hook orchestration
+├── .tflint.hcl                # TFLint AWS ruleset configuration
+├── .checkov.yml               # Checkov scan ignore list
+├── .terraform-docs.yml        # Config for terraform documentation during workflow
+├── main.tf                    # Root module orchestrating all tiers
+├── outputs.tf                 # Global output values (e.g., ALB DNS)
+├── project-key.pem            # Private SSH key for EC2 access
+├── providers.tf               # AWS provider and Terraform version config
+└── README.md                  # Project documentation (Auto-injected by terraform-docs)
+├── README.template.md         # Documentation template
+├── terraform.tfstate          # Current state of deployed infrastructure
+├── terraform.tfstate.backup   # Previous state backup
+└── variables.tf               # Global input variables
 </pre>
+<div align="right"><a href="#readme-top">↑ Back to Top</a></div>
+
+<h2 id="technical">Technical Reference</h2>
+This section is automatically updated with the latest infrastructure details.
+<details>
+<summary><b>Detailed Infrastructure Specifications</b></summary>
+
+<!-- BEGIN_TF_DOCS -->
+
+## Requirements
+
+| Name                                                                     | Version  |
+| ------------------------------------------------------------------------ | -------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 1.5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement_aws)                   | ~> 5.0   |
+| <a name="requirement_http"></a> [http](#requirement_http)                | ~> 3.0   |
+| <a name="requirement_local"></a> [local](#requirement_local)             | ~> 2.0   |
+| <a name="requirement_random"></a> [random](#requirement_random)          | ~> 3.0   |
+| <a name="requirement_tls"></a> [tls](#requirement_tls)                   | ~> 4.0   |
+
+## Modules
+
+| Name                                                                             | Source                    | Version |
+| -------------------------------------------------------------------------------- | ------------------------- | ------- |
+| <a name="module_alb"></a> [alb](#module_alb)                                     | ./modules/alb             | n/a     |
+| <a name="module_ec2"></a> [ec2](#module_ec2)                                     | ./modules/ec2             | n/a     |
+| <a name="module_rds"></a> [rds](#module_rds)                                     | ./modules/rds             | n/a     |
+| <a name="module_security_groups"></a> [security_groups](#module_security_groups) | ./modules/security_groups | n/a     |
+| <a name="module_vpc"></a> [vpc](#module_vpc)                                     | ./modules/vpc             | n/a     |
+
+## Resources
+
+| Name                                                                                                               | Type        |
+| ------------------------------------------------------------------------------------------------------------------ | ----------- |
+| [aws_key_pair.generated_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource    |
+| [local_file.private_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file)       | resource    |
+| [tls_private_key.main](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)    | resource    |
+| [http_http.my_ip](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http)            | data source |
+
+## Inputs
+
+| Name                                                                                    | Description                       | Type           | Default                                                           | Required |
+| --------------------------------------------------------------------------------------- | --------------------------------- | -------------- | ----------------------------------------------------------------- | :------: |
+| <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | Availability zones to use         | `list(string)` | <pre>[<br/> "ap-southeast-1a",<br/> "ap-southeast-1b"<br/>]</pre> |    no    |
+| <a name="input_aws_region"></a> [aws_region](#input_aws_region)                         | AWS region to deploy resources in | `string`       | `"us-east-1"`                                                     |    no    |
+| <a name="input_db_password"></a> [db_password](#input_db_password)                      | RDS root password                 | `string`       | n/a                                                               |   yes    |
+| <a name="input_private_subnets"></a> [private_subnets](#input_private_subnets)          | Private subnet CIDR blocks        | `list(string)` | <pre>[<br/> "10.0.3.0/24",<br/> "10.0.4.0/24"<br/>]</pre>         |    no    |
+| <a name="input_public_subnets"></a> [public_subnets](#input_public_subnets)             | Public subnet CIDR blocks         | `list(string)` | <pre>[<br/> "10.0.1.0/24",<br/> "10.0.2.0/24"<br/>]</pre>         |    no    |
+| <a name="input_vpc_cidr"></a> [vpc_cidr](#input_vpc_cidr)                               | VPC CIDR block                    | `string`       | `"10.0.0.0/16"`                                                   |    no    |
+
+## Outputs
+
+| Name                                                                                            | Description                                                           |
+| ----------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| <a name="output_alb_dns_name"></a> [alb_dns_name](#output_alb_dns_name)                         | The DNS name of the ALB (or EC2 IP if ALB is disabled) for CD scripts |
+| <a name="output_alb_sg_id"></a> [alb_sg_id](#output_alb_sg_id)                                  | Security Group ID of the ALB                                          |
+| <a name="output_alb_target_group_arn"></a> [alb_target_group_arn](#output_alb_target_group_arn) | n/a                                                                   |
+| <a name="output_aws_region"></a> [aws_region](#output_aws_region)                               | The AWS region in use                                                 |
+| <a name="output_ec2_instance_ids"></a> [ec2_instance_ids](#output_ec2_instance_ids)             | IDs from the EC2 module                                               |
+| <a name="output_ec2_public_ips"></a> [ec2_public_ips](#output_ec2_public_ips)                   | Public IP addresses of the EC2 instances                              |
+| <a name="output_ec2_sg_id"></a> [ec2_sg_id](#output_ec2_sg_id)                                  | Security Group ID of the EC2 instances                                |
+| <a name="output_private_subnet_ids"></a> [private_subnet_ids](#output_private_subnet_ids)       | Private subnet IDs                                                    |
+| <a name="output_public_subnet_ids"></a> [public_subnet_ids](#output_public_subnet_ids)          | Public subnet IDs                                                     |
+| <a name="output_rds_endpoint"></a> [rds_endpoint](#output_rds_endpoint)                         | The connection endpoint for the RDS instance                          |
+| <a name="output_rds_sg_id"></a> [rds_sg_id](#output_rds_sg_id)                                  | Security Group ID of the RDS instance                                 |
+| <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id)                                           | VPC ID                                                                |
+
+<!-- END_TF_DOCS -->
+</details>
 <div align="right"><a href="#readme-top">↑ Back to Top</a></div>
 
 <h2 id="getting-started">Getting Started</h2>
 <h3>Prerequisites</h3>
 <ul>
-   <li>AWS CLI installed and configured.</li>
-   <li>Terraform CLI (v1.5+) installed.</li>
-   <li>Terraform Cloud account registered. (optional)</li>
-   <li>An existing EC2 Key Pair for SSH access.</li>
-   <li><strong>Set your AWS Region:</strong> Set to whatever <code>aws_region</code> you want in <code>variables.tf</code>.</li>
+  <li>AWS Account with Bedrock Claude 3.5 model access enabled.</li>
+  <li>Terraform CLI (v1.5.0+) installed locally.</li>
+  <li>Terraform Cloud account for remote state management.</li>
+  <li><strong>Set your AWS Region:</strong> Set to whatever <code>aws_region</code> you want in <code>variables.tf</code>.</li>
 </ul>
+<p>
+  <img src="assets/Terraform Cloud.png" alt="Terraform Cloud" />
+</p>
 
-<h3>Terraform State Management</h3>
-<p>Select one:</p>
+<h3>Terraform Cloud State Management</h3>
 <ol>
-   <li>Terraform Cloud</li>
-   <li>Terraform Local CLI</li>
-</ol>
-
-<h4>Terraform Cloud Configuration</h4>
-<p>If you choose Terraform Cloud, please follow the steps below:</p>
-<ol>
-   <li>Create a new <strong>Workspace</strong> in Terraform Cloud.</li>
+   <li>Create a new <strong>Workspace</strong> with github version control workflow in Terraform Cloud.</li>
    <li>In the Variables tab, add the following <strong>Terraform Variables:</strong>
    </li>
    <li>
@@ -216,59 +318,130 @@
       <li><code>AWS_SECRET_ACCESS_KEY</code></li>
    </ul>
    </li>
-</ol>
-
-<h4>Terraform Local CLI Configuration</h4>
-<p>If you choose Terraform Local CLI, please follow the steps below:</p>
-<ol>
-   <li>
-      Comment the <code>backend</code> block in <code>terraform.tf</code>:
-      <pre># backend "remote" {
-#   hostname     = "app.terraform.io"
-#   organization = "&lt;your-terraform-organization-name&gt;"
-#   workspaces {
-#     name = "&lt;your-terraform-workspace-name&gt;"
-#   }
-# }</pre>
+    <li>
+      Run the command ni Terraform CLI:
+      <pre>terraform login</pre>
+    </li>
+    <li>Create a token and follow the steps in browser to complete the Terraform Cloud Connection.</li>
+    <li>
+      Add the <code>backend</code> block in <code>terraform</code> code block</code>:
+    <pre>backend "remote" {
+  hostname     = "app.terraform.io"
+  organization = &lt;your-organization-name&gt;
+  workspaces {
+    name = &lt;your-workspace-name&gt;
+  }
+}</pre>
    </li>
-   <li>
-    Add the following <strong>Environment Variables</strong> (AWS Credentials):
-    <pre>git bash command:
-export AWS_ACCESS_KEY_ID=&lt;your-aws-access-key-id&gt;
-export AWS_SECRET_ACCESS_KEY=&lt;your-aws-secret-access-key&gt;
+    <li>
+      Run the command in Terraform CLI to migrate the state into Terraform Cloud:
+      <pre>terraform init -migrate-state</pre>
+    </li>
 </ol>
 
-<h3>Deployment</h3>
+<h3>Installation & Deployment</h3>
 <ol>
-  <li>Set your database password to create an RDS database:
-    <pre>Terraform Local: enter git bash command below
-export TF_VAR_db_password=&lt;YourSuperSecurePassword123&gt;
-Terraform Cloud:
-Configure TF_VAR_db_password environment variables in workspace</pre>
-  </li>
-  <li>
-    <strong>Clone the Repository</strong>
-  </li>
-  <li>
-    <strong>Provision Infrastructure:</strong>
-    <ul>
-      <li>
+    <li>
+        <strong>Clone the Repository:</strong>
+        <pre>git clone https://github.com/ShenLoong99/aws-terraform-2-tier-webapp.git</pre>
+    </li>
+    <li>
+        <strong>Provision Infrastructure:</strong><br>
         <strong>Terraform Cloud</strong> → <strong>Initialize & Apply:</strong> Push your code to GitHub. Terraform Cloud will automatically detect the change, run a <code>plan</code>, and wait for your approval.
-      </li>
+    </li>
+    <li>
+        <strong>Observe workflow:</strong><br>
+        <strong>GitHub (GitOps)</strong> → <strong>Github actions:</strong> Observe the process/workflow of CI/CD in the actions tab in GitHub.
+    </li>
+</ol>
+<div align="right"><a href="#readme-top">↑ Back to Top</a></div>
+
+<h2 id="gitops">GitOps & CI/CD Workflow</h2>
+<p>This project uses a fully automated GitOps pipeline to ensure code quality and deployment reliability. The <strong>Pre-commit</strong> framework implements a "Shift-Left" strategy, ensuring that code is formatted, documented, and secure before it ever leaves your machine.</p>
+
+<h3>Workflow</h3>
+<ol>
+  <li>
+    <strong>Branch Protection Rulesets</strong><br>
+    To ensure high code quality and prevent unauthorized changes to the production environment, the <code>main</code> branch is governed by a <strong>GitHub Branch Ruleset</strong>.
+    <ul>
+      <li><strong>Pull Request Mandatory:</strong> No code can be pushed directly to <code>main</code>. All changes must originate from a feature branch and be merged via a Pull Request.</li>
+      <li><strong>Required Status Checks:</strong> The <code>Infrastructure CI</code> (Terraform Plan & Static Analysis) must pass successfully before a merge is permitted.</li>
+      <li><strong>Bypass Authority:</strong> The dedicated GitHub App is added to the Bypass List with "Always allow" permissions. This allows the bot to push documentation updates directly to <code>main</code> without being blocked by PR requirements.</li>
+    </ul>
+  </li>
+  <li>
+    <strong>Pre-commit</strong>
+    <ul>
+      <li><strong>Tool:</strong> Executes <code>terraform fmt</code>, <code>terraform validate</code>, <code>TFLint</code>, <code>terraform_docs</code> and <code>checkov</code> to ensure the code is clean.</li>
+      <li><strong>Trigger:</strong> Runs on every <strong>git commit</strong>.</li>
       <li>
-        <strong>Terraform CLI</strong> → <strong>Initialize & Apply:</strong> Run <code>terraform init</code> → <code>terraform plan</code> → <code>terraform apply</code>, and wait for your approval.
-      </li>
-      <li>
-         Wait for the ASG to provision the instances. Note: The <strong>Health Check Grace Period</strong> (300s) may cause a slight delay in instance readiness.<br>
-         <img src="assets/asg-provisioned.png" alt="asg-provisioned"  />
+        <strong>Outcome:</strong> If any check fails, the commit is blocked. You fix the error, re-add the file, and commit again.
       </li>
     </ul>
   </li>
   <li>
-    <strong>Note:</strong> To maintain AWS Free Tier eligibility, Multi-AZ is disabled in <code>modules\rds\main.tf</code>. In a production environment, <code>multi_az</code> would be set to <code>true</code> to provision a standby instance across Availability Zones as shown in the architecture diagram<br>
-    <img src="assets/multi-az-false.png" alt="multi-az-false" />
+    <strong>Continuous Integration (PR)</strong>
+    <ul>
+      <li><strong>Tool:</strong> Executes <code>terraform fmt -check</code>, <code>terraform validate</code> and <code>checkov</code>, then do <code>plan</code> and cost estimation and print it on PR.</li>
+      <li><strong>Trigger:</strong> Runs on every <strong>Pull Request</strong>.</li>
+      <li>
+        <strong>Outcome:</strong> This acts as the "Gatekeeper" before code is merged to <code>main</code>.
+      </li>
+    </ul>
+  </li>
+  <li>
+    <strong>Continuous Delivery (Deployment)</strong>
+    <ul>
+      <li><strong>Tool:</strong> Terraform Cloud + GitHub Actions OIDC.</li>
+      <li><strong>Trigger:</strong> Merges to the <code>main</code> branch.</li>
+      <li>
+        <strong>Outcome:</strong> The pipeline verifies the infrastructure state and runs a post-deployment health check with(<code>health-check.sh</code> & <code>smoke-test-website.sh</code>).
+      </li>
+    </ul>
+  </li>
+  <li>
+    <strong>Dynamically update readme documentation</strong>
+    <ul>
+      <li><strong>Tool:</strong> <code>terraform_docs</code> + GitHub Actions.</li>
+      <li><strong>Trigger:</strong> Merges to the <code>main</code> branch.</li>
+      <li>
+        <strong>Outcome:</strong> The pipeline verifies the infrastructure state from Terraform Cloud, retrieve outputs from Terraform Cloud and update the readme documentation file dynamically.
+      </li>
+    </ul>
   </li>
 </ol>
+
+<h3>Prerequisites for GitOps</h3>
+<ul>
+  <li><strong>Repository Secret <code>TF_API_TOKEN</code>:</strong> Required for GitHub to communicate with Terraform Cloud.</li>
+  <li><strong>Trigger:</strong> A GitHub Actions OIDC role (<code>GitHubActionRole</code>) allows the runner to verify AWS resources without long-lived keys.</li>
+  <li>
+      <strong>Automated Documentation via GitHub App:</strong> Instead of using a Personal Access Token (PAT) or the default <code>GITHUB_TOKEN</code>, this project uses a custom <strong>GitHub App</strong> for automated tasks.<br>
+      <table>
+         <thead>
+            <tr>
+               <td>Secret</td>
+               <td>Description</td>
+               <td>Source</td>
+            </tr>
+         </thead>
+         <tbody>
+            <tr>
+               <td><code>BOT_APP_ID</code></td>
+               <td>The unique numerical ID assigned to your GitHub App.</td>
+               <td>App Settings > General</td>
+            </tr>
+            <tr>
+               <td><code>BOT_PRIVATE_KEY</code></td>
+               <td>The full content of the generated <code>.pem</code> private key file.</td>
+               <td>App Settings > Private keys</td>
+            </tr>
+         </tbody>
+      </table>
+   </li>
+</ul>
+<div align="right"><a href="#readme-top">↑ Back to Top</a></div>
 
 <div align="right"><a href="#readme-top">↑ Back to Top</a></div>
 <h2 id="usage">Usage & Testing</h2>
@@ -519,12 +692,89 @@ Configure TF_VAR_db_password environment variables in workspace</pre>
 </table>
 <div align="right"><a href="#readme-top">↑ Back to Top</a></div>
 
-<h2 id="cost-optimization">Cost Optimization</h2>
-<ul>
-   <li><strong>Free Tier Friendly:</strong> Uses <code>t2.micro</code> instances and <code>db.t3.micro</code> instances.</li>
-   <li><strong>Log Retention:</strong> Set to 7 days to prevent unnecessary storage costs in CloudWatch.</li>
-   <li><strong>Database Tiering:</strong> Leveraged <code>db.t3.micro</code> to stay within the AWS Free Tier while still testing Multi-AZ logic.</li>
-</ul>
+<h2 id="well-architected">🏛️ AWS Well-Architected Framework Alignment</h2>
+<p>This project demonstrates a <strong>Cost-Optimized Development Environment</strong>, prioritizing security and observability over high-availability redundancy to minimize AWS expenditure while maintaining production-grade standards.</p>
+<table width="100%">
+   <thead>
+      <tr>
+         <th width="25%">Pillar</th>
+         <th>Technical Implementation & Alignment</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_AWS-Well-Architected-Tool_48.svg" alt="operation-excellence" width="45" height="45" /><br>
+            <strong>Operational Excellence</strong>
+         </td>
+         <td>
+            <ul>
+               <li><strong>Infrastructure as Code:</strong> 100% of the stack is provisioned via Terraform, allowing for consistent, repeatable deployments.</li>
+               <li><strong>Automated Observability:</strong> Integrated CloudWatch Agent via SSM Parameter Store for automated log collection from EC2 instances without manual intervention.</li>
+               <li><strong>GitOps CI/CD:</strong> Implemented a fully automated pipeline for testing, linting, and deploying infrastructure changes via GitHub Actions and Terraform Cloud.</li>
+               <li><strong>Standardized Deployment:</strong> Uses a modularized file structure to separate networking, compute, and database logic for better maintainability.</li>
+            </ul>
+         </td>
+      </tr>
+      <tr>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Security-Identity-Compliance/48/Arch_AWS-Identity-and-Access-Management_48.svg"  alt="security" width="45" height="45" /><br>
+            <strong>Security</strong>
+         </td>
+         <td>
+            <ul>
+               <li><strong>Network Isolation:</strong> RDS database is strictly isolated in private subnets with no public internet ingress.</li>
+               <li><strong>Traffic Control:</strong> Security Groups utilize <strong>referencing</strong> (e.g., RDS only allows 3306 from the Web SG) rather than open IP ranges.</li>
+               <li><strong>Auditability:</strong> VPC Flow Logs and ALB Access Logs provide a complete audit trail of all network traffic and client requests.</li>
+            </ul>
+         </td>
+      </tr>
+      <tr>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_Amazon-CloudWatch_48.svg" alt="reliability" width="45" height="45" /><br>
+            <strong>Reliability & Failure Design</strong>
+         </td>
+         <td>
+            <ul>
+               <li><strong>Data Persistence:</strong> RDS MySQL managed database provides automated backups and multi-AZ failover capabilities.</li>
+               <li><strong>Manual Scaling:</strong> Simplifies architecture by avoiding ASG complexity, allowing for predictable resource management in a dev/test context.</li>
+               <li><strong>Health Monitoring:</strong> The Application Load Balancer performs active health checks to notify of instance downtime via CloudWatch Alarms.</li>
+            </ul>
+         </td>
+      </tr>
+      <tr>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Compute/48/Arch_Amazon-EC2_48.svg" alt="performance" width="45" height="45" /><br>
+            <strong>Performance Efficiency</strong>
+         </td>
+         <td>
+            <ul>
+               <li><strong>Elastic Load Balancing:</strong> Application Load Balancer (ALB) ensures efficient traffic distribution across the healthy compute fleet.</li>
+               <li><strong>Optimized Compute:</strong> Leveraged <code>t3.micro</code> instances for the web tier and managed RDS for optimized database performance.</li>
+               <li><strong>Configuration as Code:</strong> Using SSM to push agent configurations avoids manual "SSH-to-all" performance bottlenecks during updates.</li>
+            </ul>
+         </td>
+      </tr>
+      <tr>
+         <td align="center"> <img src="https://raw.githubusercontent.com/weibeld/aws-icons-svg/main/q1-2022/Architecture-Service-Icons_01312022/Arch_Management-Governance/48/Arch_Amazon-CloudWatch_48.svg" alt="cost-optimization" width="45" height="45" /><br>
+            <strong>Cost Optimization</strong>
+         </td>
+         <td>
+            <ul>
+               <li><strong>Free-Tier Alignment:</strong> Utilizes <code>t3.micro</code> instances and a single RDS instance to stay within the AWS Free Tier.</li>
+               <li><strong>Single-AZ Strategy:</strong> Eliminated Multi-AZ and Cross-Zone Data Transfer costs, reducing monthly spend by ~50% compared to a HA setup.</li>
+               <li><strong>Log Retention:</strong> Set to 7 days to prevent unnecessary storage costs in CloudWatch.</li>
+            </ul>
+         </td>
+      </tr>
+      <tr>
+         <td align="center">
+            <strong>Sustainability</strong>
+         </td>
+         <td>
+            <ul>
+               <li><strong>Managed Services:</strong> Utilizing RDS reduces the energy overhead of running manual database servers.</li>
+            </ul>
+         </td>
+      </tr>
+   </tbody>
+</table>
 <div align="right"><a href="#readme-top">↑ Back to Top</a></div>
 
 <h2 id="acknowledgements">Acknowledgements</h2>
@@ -553,3 +803,9 @@ Configure TF_VAR_db_password environment variables in workspace</pre>
 [license-url]: https://github.com/ShenLoong99/aws-terraform-2-tier-webapp/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/si-kai-tan
+[ci-shield]: https://github.com/ShenLoong99/aws-terraform-2-tier-webapp/actions/workflows/ci.yml/badge.svg
+[ci-url]: https://github.com/ShenLoong99/aws-terraform-2-tier-webapp/actions/workflows/ci.yml
+[cd-shield]: https://github.com/ShenLoong99/aws-terraform-2-tier-webapp/actions/workflows/cd.yml/badge.svg
+[cd-url]: https://github.com/ShenLoong99/aws-terraform-2-tier-webapp/actions/workflows/cd.yml
+[docs-shield]: https://github.com/ShenLoong99/aws-terraform-2-tier-webapp/actions/workflows/documentation.yml/badge.svg
+[docs-url]: https://github.com/ShenLoong99/aws-terraform-2-tier-webapp/actions/workflows/documentation.yml
