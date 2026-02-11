@@ -1,4 +1,9 @@
-require('dotenv').config();
+console.log("Checking DB Config:", {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    db: process.env.DB_NAME
+});
+
 const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
