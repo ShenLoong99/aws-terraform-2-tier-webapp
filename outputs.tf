@@ -67,3 +67,13 @@ output "aws_region" {
   description = "The AWS region in use"
   value       = var.aws_region
 }
+
+output "selected_ami_name" {
+  description = "The name of the selected Amazon Linux 2 AMI"
+  value       = module.ec2.selected_ami_name
+}
+
+output "selected_ami_id" {
+  description = "The ID of the selected Amazon Linux 2 AMI"
+  value       = module.ec2.selected_ami_id
+}
