@@ -8,6 +8,7 @@ variable "rds_sg_id" {
   type        = string
 }
 
+# Retrieve from TFC variable
 variable "db_password" {
   description = "The password for the database"
   type        = string
