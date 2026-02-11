@@ -28,8 +28,15 @@ variable "availability_zones" {
   default     = ["us-east-1a", "us-east-1b"]
 }
 
+# Retrieve from TFC variable
 variable "db_password" {
   description = "RDS root password"
   type        = string
   sensitive   = true
+}
+
+# Retrieve from TFC variable
+variable "admin_ip" {
+  description = "CIDR block for admin IPs allowed to access resources"
+  type        = string
 }
