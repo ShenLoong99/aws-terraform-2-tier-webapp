@@ -29,7 +29,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port = 3000
     to_port   = 3000
     protocol  = "tcp"
-    # CRITICAL: Use 'security_groups' (the ID of the ALB SG) 
+    # CRITICAL: Use 'security_groups' (the ID of the ALB SG)
     # instead of 'cidr_blocks'. This blocks the general internet.
     security_groups = [aws_security_group.alb_sg.id]
   }

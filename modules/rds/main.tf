@@ -19,5 +19,5 @@ resource "aws_db_instance" "mysql" {
   vpc_security_group_ids = [var.rds_sg_id]
   skip_final_snapshot    = true
   # multi_az               = true # For production, consider enabling Multi-AZ
-  multi_az               = false # Disabled for cost-saving in dev/test
+  multi_az = false # Disabled for cost-saving in dev/test
 }

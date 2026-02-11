@@ -1,13 +1,3 @@
-locals {
-  common_tags = {
-    Project     = "Project-5-Two-Tier-WebApp"
-    Environment = "Development"
-    Owner       = "ShenLoong"
-    ManagedBy   = "Terraform"
-    CostCenter  = "Cloud-Learning"
-  }
-}
-
 # Fetch your current public IP address
 data "http" "my_ip" {
   url = "https://ipv4.icanhazip.com"
