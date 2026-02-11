@@ -246,9 +246,6 @@ This section is automatically updated with the latest infrastructure details.
   <li>Terraform Cloud account for remote state management.</li>
   <li><strong>Set your AWS Region:</strong> Set to whatever <code>aws_region</code> you want in <code>variables.tf</code>.</li>
 </ul>
-<p>
-  <img src="assets/Terraform Cloud.png" alt="Terraform Cloud" />
-</p>
 
 <h3>Terraform Cloud State Management</h3>
 <ol>

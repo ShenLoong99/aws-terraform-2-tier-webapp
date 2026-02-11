@@ -25,7 +25,7 @@ variable "private_subnets" {
 variable "availability_zones" {
   description = "Availability zones to use"
   type        = list(string)
-  default     = ["ap-southeast-1a", "ap-southeast-1b"]
+  default     = ["us-east-1a", "us-east-1b"]
 }
 
 variable "db_password" {
