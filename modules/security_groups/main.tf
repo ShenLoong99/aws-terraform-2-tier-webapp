@@ -1,8 +1,3 @@
-# Fetch your current public IP address
-data "http" "my_ip" {
-  url = "https://ipv4.icanhazip.com"
-}
-
 # ALB Security Group
 resource "aws_security_group" "alb_sg" {
   # checkov:skip=CKV_AWS_260:Port 80 is open to allow public demo access. HTTPS (443) is preferred but requires a custom domain/certificate which is out of scope for this Free Tier project.
@@ -51,7 +46,7 @@ resource "aws_security_group" "ec2_sg" {
     to_port     = 22
     protocol    = "tcp"
     # chomp() removes the hidden newline character from the API response
-    cidr_blocks = ["${chomp(data.http.my_ip.response_body)}/32"]
+    cidr_blocks = ["${var.admin_ip}/32"]
   }
 
   egress {
