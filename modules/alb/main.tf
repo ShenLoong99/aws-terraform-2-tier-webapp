@@ -1,3 +1,6 @@
+# query the AWS ELB service account for log delivery
+data "aws_elb_service_account" "main" {}
+
 resource "aws_lb" "application_lb" {
   name                       = var.aws_lb_name
   internal                   = false
@@ -5,6 +8,7 @@ resource "aws_lb" "application_lb" {
   security_groups            = [var.alb_sg_id]
   subnets                    = var.public_subnet_ids
   drop_invalid_header_fields = true
+  depends_on                 = [aws_s3_bucket_policy.alb_log_policy]
 
   access_logs {
     bucket  = aws_s3_bucket.alb_logs.id
@@ -85,8 +89,8 @@ resource "aws_s3_bucket_policy" "alb_log_policy" {
       {
         Effect = "Allow"
         Principal = {
-          # This ID is specific to ap-southeast-1 (Singapore)
-          AWS = "arn:aws:iam::114774131450:root"
+          # Dynamically uses the correct ID for different aws regions
+          AWS = data.aws_elb_service_account.main.arn
         }
         Action = "s3:PutObject"
         # Grant access to the AWSLogs path within the bucket
