@@ -114,6 +114,10 @@ const getLayout = () => `
 
 app.get('/', (req, res) => res.send(getLayout()));
 
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
 app.get('/api/tasks', (req, res) => {
     db.query('SELECT * FROM items ORDER BY completed ASC, id DESC', (err, results) => {
         if (err) return res.status(500).json([]);
