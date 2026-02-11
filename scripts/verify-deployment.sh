@@ -10,7 +10,7 @@ if [ -z "${APP_URL:-}" ]; then
   exit 1
 fi
 
-BASE_URL="http://${APP_URL}"
+BASE_URL=${APP_URL}
 
 echo "--------------------------------------------------"
 echo "🚀 Starting Deployment Verification for: $BASE_URL"
