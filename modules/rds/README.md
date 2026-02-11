@@ -27,7 +27,6 @@ No modules.
 | <a name="input_allocated_storage"></a> [allocated\_storage](#input\_allocated\_storage) | The allocated storage in gigabytes | `number` | `20` | no |
 | <a name="input_aws_db_subnet_group_name"></a> [aws\_db\_subnet\_group\_name](#input\_aws\_db\_subnet\_group\_name) | The name of the DB subnet group | `string` | `"main-rds-subnet-group"` | no |
 | <a name="input_aws_db_subnet_group_tags"></a> [aws\_db\_subnet\_group\_tags](#input\_aws\_db\_subnet\_group\_tags) | Tags for the DB subnet group | `map(string)` | <pre>{<br/>  "Name": "My DB Subnet Group"<br/>}</pre> | no |
-| <a name="input_db_instance_class"></a> [db\_instance\_class](#input\_db\_instance\_class) | The instance type of the RDS database | `string` | `"db.t3.micro"` | no |
 | <a name="input_db_name"></a> [db\_name](#input\_db\_name) | The name of the database | `string` | `"webapp_2_tier_db"` | no |
 | <a name="input_db_password"></a> [db\_password](#input\_db\_password) | The password for the database | `string` | n/a | yes |
 | <a name="input_engine"></a> [engine](#input\_engine) | The database engine | `string` | `"mysql"` | no |

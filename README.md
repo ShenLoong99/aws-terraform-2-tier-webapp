@@ -255,12 +255,11 @@ This section is automatically updated with the latest infrastructure details.
 
 ## Resources
 
-| Name                                                                                                               | Type        |
-| ------------------------------------------------------------------------------------------------------------------ | ----------- |
-| [aws_key_pair.generated_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource    |
-| [local_file.private_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file)       | resource    |
-| [tls_private_key.main](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)    | resource    |
-| [http_http.my_ip](https://registry.terraform.io/providers/hashicorp/http/latest/docs/data-sources/http)            | data source |
+| Name                                                                                                               | Type     |
+| ------------------------------------------------------------------------------------------------------------------ | -------- |
+| [aws_key_pair.generated_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair) | resource |
+| [local_file.private_key](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file)       | resource |
+| [tls_private_key.main](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key)    | resource |
 
 ## Inputs
 
