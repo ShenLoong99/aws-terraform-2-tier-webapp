@@ -1,8 +1,3 @@
-# Fetch your current public IP address
-data "http" "my_ip" {
-  url = "https://ipv4.icanhazip.com"
-}
-
 # Networking Module
 module "vpc" {
   source        = "./modules/vpc"
@@ -16,8 +11,6 @@ module "vpc" {
 module "security_groups" {
   source = "./modules/security_groups"
   vpc_id = module.vpc.vpc_id
-  # Clean the response body with chomp() to remove hidden newlines
-  admin_ip = chomp(data.http.my_ip.response_body)
 }
 
 # RDS Database Module
