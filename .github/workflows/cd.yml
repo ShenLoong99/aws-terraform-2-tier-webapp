@@ -92,7 +92,7 @@ jobs:
       - name: Fetch Environment Variables
         id: vars
         run: |
-          echo "ALB_DNS=$(terraform output -raw alb_dns_name)" >> $GITHUB_ENV
+          echo "APP_URL=$(terraform output -raw app_url)" >> $GITHUB_ENV
           echo "AWS_REGION=$(terraform output -raw aws_region)" >> $GITHUB_ENV
 
       - name: Configure AWS Credentials
@@ -103,7 +103,14 @@ jobs:
 
       - name: Run Verification Script
         env:
-          ALB_DNS: ${{ env.ALB_DNS }}
+          APP_URL: ${{ env.APP_URL }}
         run: |
           chmod +x ./scripts/verify-deployment.sh
           ./scripts/verify-deployment.sh
+
+      - name: Run Functionality Tests
+        env:
+          APP_URL: ${{ env.APP_URL }}
+        run: |
+          chmod +x ./scripts/test-functions.sh
+          ./scripts/test-functions.sh

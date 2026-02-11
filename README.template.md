@@ -244,7 +244,6 @@ This section is automatically updated with the latest infrastructure details.
   <li>AWS Account with Bedrock Claude 3.5 model access enabled.</li>
   <li>Terraform CLI (v1.5.0+) installed locally.</li>
   <li>Terraform Cloud account for remote state management.</li>
-  <li><strong>Set your AWS Region:</strong> Set to whatever <code>aws_region</code> you want in <code>variables.tf</code>.</li>
 </ul>
 
 <h3>Terraform Cloud State Management</h3>
