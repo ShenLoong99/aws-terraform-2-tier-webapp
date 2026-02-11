@@ -13,7 +13,7 @@ sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
 
 cd /home/ec2-user/app
 npm init -y
-npm install express mysql2 body-parser
+npm install express mysql2 body-parser dotenv
 
 # Create index.js
 cat <<'EOF' > /home/ec2-user/app/index.js
@@ -36,6 +36,11 @@ Environment=DB_PASS=${db_pass}
 Environment=DB_NAME=${db_name}
 ExecStart=/usr/bin/node /home/ec2-user/app/index.js
 Restart=always
+# Add a delay so it doesn't hit the "start-limit-hit" immediately
+RestartSec=5
+# Redirect errors to the journal clearly
+StandardOutput=append:/home/ec2-user/app/out.log
+StandardError=append:/home/ec2-user/app/err.log
 
 [Install]
 WantedBy=multi-user.target
