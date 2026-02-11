@@ -264,14 +264,14 @@ This section is automatically updated with the latest infrastructure details.
 
 ## Inputs
 
-| Name                                                                                    | Description                       | Type           | Default                                                           | Required |
-| --------------------------------------------------------------------------------------- | --------------------------------- | -------------- | ----------------------------------------------------------------- | :------: |
-| <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | Availability zones to use         | `list(string)` | <pre>[<br/> "ap-southeast-1a",<br/> "ap-southeast-1b"<br/>]</pre> |    no    |
-| <a name="input_aws_region"></a> [aws_region](#input_aws_region)                         | AWS region to deploy resources in | `string`       | `"us-east-1"`                                                     |    no    |
-| <a name="input_db_password"></a> [db_password](#input_db_password)                      | RDS root password                 | `string`       | n/a                                                               |   yes    |
-| <a name="input_private_subnets"></a> [private_subnets](#input_private_subnets)          | Private subnet CIDR blocks        | `list(string)` | <pre>[<br/> "10.0.3.0/24",<br/> "10.0.4.0/24"<br/>]</pre>         |    no    |
-| <a name="input_public_subnets"></a> [public_subnets](#input_public_subnets)             | Public subnet CIDR blocks         | `list(string)` | <pre>[<br/> "10.0.1.0/24",<br/> "10.0.2.0/24"<br/>]</pre>         |    no    |
-| <a name="input_vpc_cidr"></a> [vpc_cidr](#input_vpc_cidr)                               | VPC CIDR block                    | `string`       | `"10.0.0.0/16"`                                                   |    no    |
+| Name                                                                                    | Description                       | Type           | Default                                                   | Required |
+| --------------------------------------------------------------------------------------- | --------------------------------- | -------------- | --------------------------------------------------------- | :------: |
+| <a name="input_availability_zones"></a> [availability_zones](#input_availability_zones) | Availability zones to use         | `list(string)` | <pre>[<br/> "us-east-1a",<br/> "us-east-1b"<br/>]</pre>   |    no    |
+| <a name="input_aws_region"></a> [aws_region](#input_aws_region)                         | AWS region to deploy resources in | `string`       | `"us-east-1"`                                             |    no    |
+| <a name="input_db_password"></a> [db_password](#input_db_password)                      | RDS root password                 | `string`       | n/a                                                       |   yes    |
+| <a name="input_private_subnets"></a> [private_subnets](#input_private_subnets)          | Private subnet CIDR blocks        | `list(string)` | <pre>[<br/> "10.0.3.0/24",<br/> "10.0.4.0/24"<br/>]</pre> |    no    |
+| <a name="input_public_subnets"></a> [public_subnets](#input_public_subnets)             | Public subnet CIDR blocks         | `list(string)` | <pre>[<br/> "10.0.1.0/24",<br/> "10.0.2.0/24"<br/>]</pre> |    no    |
+| <a name="input_vpc_cidr"></a> [vpc_cidr](#input_vpc_cidr)                               | VPC CIDR block                    | `string`       | `"10.0.0.0/16"`                                           |    no    |
 
 ## Outputs
 
@@ -302,9 +302,6 @@ This section is automatically updated with the latest infrastructure details.
   <li>Terraform Cloud account for remote state management.</li>
   <li><strong>Set your AWS Region:</strong> Set to whatever <code>aws_region</code> you want in <code>variables.tf</code>.</li>
 </ul>
-<p>
-  <img src="assets/Terraform Cloud.png" alt="Terraform Cloud" />
-</p>
 
 <h3>Terraform Cloud State Management</h3>
 <ol>
