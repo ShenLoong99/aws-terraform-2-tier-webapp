@@ -1,5 +1,14 @@
 # Use this to skip checks that incur high costs or break Free Tier eligibility
 skip-check:
+  # ALB-specific skips
+  - CKV_AWS_150 # Ensure that Load Balancer has deletion protection enabled (Not necessary)
+
+  # S3-specific skips
+  - CKV_AWS_145 # Ensure that S3 buckets are encrypted with KMS by default (Avoids $1/mo KMS fee)
+  - CKV_AWS_18 # Ensure the S3 bucket has access logging enabled (Saves on request/storage costs)
+  - CKV2_AWS_62 # Ensure S3 buckets should have event notifications enabled (Irrelevant)
+  - CKV_AWS_144 # Ensure that S3 bucket has cross-region replication enabled (Prevents doubling storage costs)
+
   # Cloudwatch-specific skips
   - CKV_AWS_158 # Ensure that CloudWatch Log Group is encrypted by KMS (Avoid KMS cost)
   - CKV_AWS_338 # Ensure CloudWatch log groups retains logs for at least 1 year (Not necessary and save cost)
