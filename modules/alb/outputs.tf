@@ -1,7 +1,6 @@
 output "alb_dns_name" {
   description = "The DNS name of the Application Load Balancer"
-  # The try() function handles the case where the list [0] is empty
-  value = aws_lb.application_lb.dns_name
+  value       = aws_lb.application_lb.dns_name
 }
 
 output "target_group_arn" {

@@ -58,11 +58,12 @@ resource "aws_launch_template" "app_lt" {
 
   # Your existing user_data script
   user_data = base64encode(templatefile("${path.module}/scripts/user_data.tftpl", {
-    db_host = var.db_host
-    db_user = var.db_username
-    db_pass = var.db_password
-    db_name = var.db_name
-    db_port = var.db_port
+    index_js_content = file("${path.module}/scripts/index.js")
+    db_host          = var.db_host
+    db_user          = var.db_username
+    db_pass          = var.db_password
+    db_name          = var.db_name
+    db_port          = var.db_port
   }))
 
   lifecycle {

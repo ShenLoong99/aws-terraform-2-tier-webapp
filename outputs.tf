@@ -1,8 +1,13 @@
 # Capture the output from the module blocks
 # ALB Outputs
 output "alb_dns_name" {
-  description = "The DNS name of the ALB (or EC2 IP if ALB is disabled) for CD scripts"
+  description = "The DNS name of the load balancer"
   value       = module.alb.alb_dns_name
+}
+
+output "app_url" {
+  description = "The clickable URL for the application"
+  value       = "http://${module.alb.alb_dns_name}"
 }
 
 output "alb_target_group_arn" {
