@@ -29,6 +29,6 @@ resource "aws_db_instance" "mysql" {
   multi_az                        = false                             # Disabled for cost-saving in dev/test
   performance_insights_enabled    = false                             # Can incur costs outside free tier
   monitoring_interval             = 0                                 # Disable Enhanced Monitoring
-  backup_retention_period         = 0                                 # Reduce backup storage to min
+  backup_retention_period         = 1                                 # Reduce backup storage to min
   delete_automated_backups        = true
 }
