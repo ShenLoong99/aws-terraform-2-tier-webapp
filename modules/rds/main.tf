@@ -15,7 +15,7 @@ resource "aws_db_instance" "mysql" {
   max_allocated_storage           = 0 # DISABLE AUTOSCALING ---
   engine                          = var.engine
   engine_version                  = "8.0"
-  instance_class                  = var.db_instance_class
+  instance_class                  = "db.t3.micro" # Free Tier Eligible
   db_name                         = var.db_name
   username                        = var.username
   password                        = var.db_password # Use Vault/SecretMgr in real prod!
