@@ -198,7 +198,7 @@
 │   ├── 📁 alb/               # Application Load Balancer configuration
 │   ├── 📁 ec2/               # Compute tier configuration
 │   │   ├── 📁 scripts/       # User data and initialization scripts (e.g., user_data.tftpl)
-│   │   ├── main.tf           # EC2 Launch Template and ASG resources [cite: 33]
+│   │   ├── main.tf           # EC2 Launch Template and ASG resources
 │   │   ├── outputs.tf        # EC2-specific output values
 │   │   ├── providers.tf      # Version constraints (No cloud block!)
 │   │   └── variables.tf      # EC2-specific input variables
