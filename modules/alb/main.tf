@@ -66,6 +66,7 @@ resource "aws_s3_bucket" "alb_logs" {
 
 # Block Public Access
 resource "aws_s3_bucket_public_access_block" "alb_logs_public_access_block" {
+  count  = var.enable_alb ? 1 : 0
   bucket = aws_s3_bucket.alb_logs[0].id
 
   block_public_acls       = true
