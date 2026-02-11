@@ -43,7 +43,7 @@ resource "aws_lb_target_group" "app_tg" {
 
 resource "aws_lb_listener" "http" {
   # checkov:skip=CKV_AWS_103:TLS policy is not applicable to HTTP listeners.
-  count             = var.enable_alb ? 1 : 0 # --- TOGGLE ---
+  count             = var.enable_alb ? 1 : 0
   load_balancer_arn = aws_lb.application_lb[0].arn
   port              = "80"
   protocol          = "HTTP"
@@ -76,6 +76,7 @@ resource "aws_s3_bucket_public_access_block" "alb_logs_public_access_block" {
 
 # enable versioning
 resource "aws_s3_bucket_versioning" "alb_logs_versioning" {
+  count  = var.enable_alb ? 1 : 0
   bucket = aws_s3_bucket.alb_logs[0].id
   versioning_configuration {
     status = "Enabled"
@@ -84,6 +85,7 @@ resource "aws_s3_bucket_versioning" "alb_logs_versioning" {
 
 # Add the REQUIRED Policy for ap-southeast-1
 resource "aws_s3_bucket_policy" "alb_log_policy" {
+  count  = var.enable_alb ? 1 : 0
   bucket = aws_s3_bucket.alb_logs[0].id
 
   policy = jsonencode({
@@ -108,6 +110,7 @@ resource "random_id" "suffix" {
 }
 
 resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
+  count  = var.enable_alb ? 1 : 0
   bucket = aws_s3_bucket.alb_logs[0].id
 
   rule {
@@ -130,6 +133,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
 
 # Enable Server-Side Encryption (SSE-S3)
 resource "aws_s3_bucket_server_side_encryption_configuration" "alb_logs_encryption" {
+  count  = var.enable_alb ? 1 : 0
   bucket = aws_s3_bucket.alb_logs[0].id
   rule {
     apply_server_side_encryption_by_default {
