@@ -46,6 +46,7 @@ module "ec2" {
   db_password       = var.db_password
 }
 
+# Storage Module for ALB Logs
 module "storage" {
   source = "./modules/storage"
 }
