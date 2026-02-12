@@ -1,6 +1,7 @@
 # query the AWS ELB service account for log delivery
 data "aws_elb_service_account" "main" {}
 
+# Application Load Balancer
 resource "aws_lb" "application_lb" {
   name                       = var.aws_lb_name
   internal                   = false
@@ -20,6 +21,7 @@ resource "aws_lb" "application_lb" {
   }
 }
 
+# Target Group for the ALB to route traffic to EC2 instances
 resource "aws_lb_target_group" "app_tg" {
   name_prefix = "app-tg" # Max 6 characters for prefix
   port        = 3000
@@ -40,6 +42,7 @@ resource "aws_lb_target_group" "app_tg" {
   }
 }
 
+# Listener for HTTP (port 80)
 resource "aws_lb_listener" "http" {
   # checkov:skip=CKV_AWS_103:TLS policy is not applicable to HTTP listeners.
   load_balancer_arn = aws_lb.application_lb.arn
@@ -100,10 +103,12 @@ resource "aws_s3_bucket_policy" "alb_log_policy" {
   })
 }
 
+# Generate a random suffix for the S3 bucket name
 resource "random_id" "suffix" {
   byte_length = 4
 }
 
+# Lifecycle rule to manage log retention
 resource "aws_s3_bucket_lifecycle_configuration" "log_lifecycle" {
   bucket = aws_s3_bucket.alb_logs.id
 
