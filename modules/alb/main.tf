@@ -6,7 +6,7 @@ resource "aws_lb" "application_lb" {
   security_groups            = [var.alb_sg_id]
   subnets                    = var.public_subnet_ids
   drop_invalid_header_fields = true
-  depends_on                 = [var.alb_log_policy]
+  depends_on                 = [var.alb_log_policy_id]
 
   access_logs {
     bucket  = var.alb_logs_id

@@ -18,7 +18,7 @@ variable "alb_logs_id" {
   type        = string
 }
 
-variable "alb_log_policy" {
+variable "alb_log_policy_id" {
   description = "The S3 bucket policy for ALB access logs"
   type        = string
 }

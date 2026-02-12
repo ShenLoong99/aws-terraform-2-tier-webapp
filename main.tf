@@ -29,7 +29,7 @@ module "alb" {
   public_subnet_ids = module.vpc.public_subnet_ids
   alb_sg_id         = module.security_groups.alb_sg_id
   alb_logs_id       = module.storage.alb_logs_id
-  alb_log_policy    = module.storage.alb_log_policy
+  alb_log_policy_id = module.storage.alb_log_policy_id
 }
 
 # EC2 Instances Module
