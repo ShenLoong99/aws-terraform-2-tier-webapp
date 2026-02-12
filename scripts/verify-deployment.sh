@@ -51,7 +51,7 @@ done
 # --- Step 2: Integration Test (Data Connectivity) ---
 echo -e "\n🔎 Step 2: Testing Database Connectivity via API..."
 # curl --fail will exit with non-zero if the response is 4xx or 5xx
-if curl --fail -s "$BASE_URL/items" > /dev/null; then
+if curl --fail -s "$BASE_URL/api/tasks" > /dev/null; then
   echo "✅ Database connectivity verified. API returned valid data."
 else
   echo "❌ Integration Test Failed: Could not fetch items from database."

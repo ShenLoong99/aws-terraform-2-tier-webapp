@@ -13,8 +13,12 @@ variable "alb_sg_id" {
   type        = string
 }
 
-variable "aws_lb_name" {
-  description = "The name of the Application Load Balancer"
+variable "alb_logs_id" {
+  description = "The ID of the S3 bucket for ALB access logs"
   type        = string
-  default     = "webapp-2-tier-alb"
+}
+
+variable "alb_log_policy_id" {
+  description = "The S3 bucket policy for ALB access logs"
+  type        = string
 }
