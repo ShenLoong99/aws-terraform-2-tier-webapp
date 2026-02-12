@@ -82,10 +82,10 @@ const getLayout = () => `
                 }
                 list.innerHTML = tasks.map(t => \`
                     <div class="d-flex justify-content-between align-items-center border-bottom py-3 task-row">
-                        <span class="\\$${t.completed ? "completed-task" : ""} fs-5 ms-2">\\$${t.name}</span>
+                        <span class="$${t.completed ? "completed-task" : ""} fs-5 ms-2">$${t.name}</span>
                         <div class="me-2">
-                            \\$${!t.completed ? '<button onclick="doneTask(' + t.id + ')" class="btn btn-sm btn-success me-2"><i class="bi bi-check-lg"></i></button>' : ""}
-                            <button onclick="deleteTask(\\$${t.id})" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            $${!t.completed ? '<button onclick="doneTask(' + t.id + ')" class="btn btn-sm btn-success me-2"><i class="bi bi-check-lg"></i></button>' : ""}
+                            <button onclick="deleteTask($${t.id})" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
                         </div>
                     </div>\`).join('');
             } catch (e) { console.error("Load failed", e); }
@@ -102,12 +102,12 @@ const getLayout = () => `
             loadTasks();
         }
         async function doneTask(id) {
-            await fetch(\`/api/tasks/complete/\\$${id}\`, { method: 'PUT' });
+            await fetch(\`/api/tasks/complete/$${id}\`, { method: 'PUT' });
             loadTasks();
         }
         async function deleteTask(id) {
             if(!confirm('Delete this task?')) return;
-            await fetch(\`/api/tasks/\\$${id}\`, { method: 'DELETE' });
+            await fetch(\`/api/tasks/$${id}\`, { method: 'DELETE' });
             loadTasks();
         }
         loadTasks();
