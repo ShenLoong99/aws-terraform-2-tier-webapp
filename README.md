@@ -289,8 +289,6 @@ This section is automatically updated with the latest infrastructure details.
 | <a name="output_public_subnet_ids"></a> [public_subnet_ids](#output_public_subnet_ids)          | Public subnet IDs                            |
 | <a name="output_rds_endpoint"></a> [rds_endpoint](#output_rds_endpoint)                         | The connection endpoint for the RDS instance |
 | <a name="output_rds_sg_id"></a> [rds_sg_id](#output_rds_sg_id)                                  | Security Group ID of the RDS instance        |
-| <a name="output_selected_ami_id"></a> [selected_ami_id](#output_selected_ami_id)                | The ID of the selected Amazon Linux 2 AMI    |
-| <a name="output_selected_ami_name"></a> [selected_ami_name](#output_selected_ami_name)          | The name of the selected Amazon Linux 2 AMI  |
 | <a name="output_vpc_id"></a> [vpc_id](#output_vpc_id)                                           | VPC ID                                       |
 
 <!-- END_TF_DOCS -->
