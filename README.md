@@ -238,9 +238,7 @@ This section is automatically updated with the latest infrastructure details.
 | ------------------------------------------------------------------------ | -------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement_terraform) | >= 1.5.0 |
 | <a name="requirement_aws"></a> [aws](#requirement_aws)                   | ~> 5.0   |
-| <a name="requirement_http"></a> [http](#requirement_http)                | ~> 3.0   |
 | <a name="requirement_local"></a> [local](#requirement_local)             | ~> 2.0   |
-| <a name="requirement_random"></a> [random](#requirement_random)          | ~> 3.0   |
 | <a name="requirement_tls"></a> [tls](#requirement_tls)                   | ~> 4.0   |
 
 ## Modules
@@ -251,6 +249,7 @@ This section is automatically updated with the latest infrastructure details.
 | <a name="module_ec2"></a> [ec2](#module_ec2)                                     | ./modules/ec2             | n/a     |
 | <a name="module_rds"></a> [rds](#module_rds)                                     | ./modules/rds             | n/a     |
 | <a name="module_security_groups"></a> [security_groups](#module_security_groups) | ./modules/security_groups | n/a     |
+| <a name="module_storage"></a> [storage](#module_storage)                         | ./modules/storage         | n/a     |
 | <a name="module_vpc"></a> [vpc](#module_vpc)                                     | ./modules/vpc             | n/a     |
 
 ## Resources
