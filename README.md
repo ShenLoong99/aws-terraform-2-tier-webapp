@@ -12,7 +12,8 @@
    <h1>🚀 Two-Tier WebApp</h1>
    <p>
       <img src="assets/cover-image.png" alt="cover-image" width="800" /> <br>
-      <strong>A Resilient Node.js Application with Automated Scaling and Real-Time Observability</strong>
+      <strong>A Resilient Node.js Application with Automated Scaling and Real-Time Observability</strong><br>
+      <strong>⚠️ Cost Advisory:</strong> This project is <strong>not</strong> fully compatible with the AWS Free Tier. While designed to be low-cost, charges will be incurred for the Application Load Balancer (ALB), NAT Gateways (if applicable), and Multi-AZ storage/compute. Expect a small daily charge while the infrastructure is active.
    </p>
 
 ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)
@@ -141,7 +142,7 @@
 
 <h2 id="architecture">Architecture</h2>
 <img src="assets/aws-terraform-2-tier-webapp.jpg" alt="architecture-diagram" /><br>
-<p>The system is deployed into a custom VPC spanning two Availability Zones (<code>ap-southeast-1a/b</code>) to ensure high availability. The <strong>Web Tier</strong> is managed by an Auto Scaling Group (ASG) and distributed by an Application Load Balancer (ALB), while the <strong>Data Tier</strong> is strictly isolated in private subnets with restricted ingress.</p>
+<p>The system is deployed into a custom VPC spanning two Availability Zones to ensure high availability. The <strong>Web Tier</strong> is managed by an Auto Scaling Group (ASG) and distributed by an Application Load Balancer (ALB), while the <strong>Data Tier</strong> is strictly isolated in private subnets with restricted ingress.</p>
 <ol>
    <li>
       <strong>Client Ingress & Routing:</strong> Traffic enters via the <strong>Internet Gateway (IGW)</strong> and is intercepted by the <strong>Application Load Balancer</strong>. The ALB acts as the single entry point, offloading SSL (if configured) and performing health checks to ensure traffic only reaches healthy EC2 nodes.
@@ -206,7 +207,8 @@
 │   ├── 📁 security_groups/   # Networking security rules
 │   └── 📁 vpc/               # Virtual Private Cloud network setup
 ├── 📁 scripts/               # Automation & Validation Scripts
-│   └── verify-deployment.sh   # Post-deployment test script
+│   ├── verify-deployment.sh   # Post-deployment test script
+│   └── test-functions.sh      # Functional API curl test script
 ├── .gitignore                 # Files excluded from version control
 ├── .terraform.lock.hcl        # Provider dependency lock file
 ├── .pre-commit-config.yaml    # Local git-hook orchestration
@@ -520,12 +522,29 @@ This section is automatically updated with the latest infrastructure details.
 
 <h3>🛠️ Advanced Debugging Tips</h3>
 <p>If the application is not responding or you notice issues with the initial setup, SSH into an instance and use these commands to diagnose the root cause.</p>
-<p> <strong>⚠️ IMPORTANT: Ensure you are operating in your Local Terminal linked to the Terraform Cloud Workspace before proceeding with these commands.</strong> </p>
 <ol>
+   <li>Debugging & Troubleshooting
+      <ul>
+         <li><strong>Check the Network Tab:</strong> Open Developer Tools (F12) and ensure requests to <code>/health</code> are returning <code>200 OK</code>.</li>
+         <li><strong>Incognito Mode:</strong> If "Mark Complete" or "Delete" buttons fail with a `removeChild` error in the console, try the app in an <strong>Incognito Window</strong>. This prevents browser extensions from interfering with the dynamic DOM updates.</li>
+         <li><strong>Hard Reload:</strong> Use <code>Ctrl + F5</code> to ensure your browser isn't running a cached, older version of the JavaScript bundle.</li>
+      </ul>
+   </li>
    <li>
       <h4>Connecting to the Instance</h4>
+      <p>There are two primary ways to access your application instance:</p>
+      <h5>Option 1: Standard SSH</h5>
       <pre>ssh -i project-key.pem ec2-user@&lt;INSTANCE_PUBLIC_IP&gt;</pre>
       <p><em>Access the virtual machine securely using your generated RSA private key.</em></p>
+      <p><strong>⚠️ IMPORTANT: Ensure you are operating in your Local Terminal linked to the Terraform Cloud Workspace before proceeding with these commands.</strong> </p>
+      <h5>Option 2: AWS Systems Manager (SSM) Session Manager (Easier)</h5>
+      <p>If you do not have SSH access or want to connect directly via the browser:</p>
+      <ul>
+         <li>Navigate to the <strong>EC2 Console</strong> and select your instance.</li>
+         <li>Click the <strong>Connect</strong> button at the top.</li>
+         <li>Select the <strong>Session Manager</strong> tab and click <strong>Connect</strong>.</li>
+      </ul>
+      <p><em>Note: This is the recommended secure method as it doesn't require opening port 22 to the public internet.</em></p>
    </li>
    <li>
       <h4>Inspecting Initialization (Cloud-Init)</h4>
@@ -616,18 +635,22 @@ This section is automatically updated with the latest infrastructure details.
 
 <h2 id="roadmap">Roadmap</h2>
 <ul>
-   <li>[x] <strong>Multi-AZ Deployment:</strong> Instances distributed across different subnets.</li>
-   <li>[x] <strong>Config-as-Code:</strong> SSM Parameter Store for agent settings.</li>
+   <h2 id="roadmap">Roadmap</h2>
+<ul>
+   <li>[x] <strong>Multi-AZ Deployment:</strong> Instances distributed across different subnets and managed by an Auto Scaling Group (ASG).</li>
+   <li>[x] <strong>Config-as-Code:</strong> SSM Parameter Store used for unified agent settings.</li>
    <li>[x] <strong>Cost Controls:</strong> Automated log retention and Infrequent Access tiers.</li>
    <li>[x] <strong>CI/CD Integration:</strong> Automate Terraform Apply via GitHub Actions.</li>
-   <li>[x] <strong>ALB Integration:</strong> Add an Application Load Balancer for a single entry point.</li>
+   <li>[x] <strong>ALB Integration:</strong> Application Load Balancer implemented as a single entry point.</li>
    <li>[x] <strong>Traffic Auditing:</strong> S3-based ALB access logging for long-term compliance.</li>
    <li>[x] <strong>Network Visibility:</strong> VPC Flow Logs integrated with CloudWatch for deep packet metadata analysis.</li>
-   <li>[ ] <strong>HTTPS:</strong> Implement SSL termination using AWS Certificate Manager.</li>
-   <li>[ ] <strong>Target Tracking Scaling:</strong> Implement <code>aws_autoscaling_policy</code> to scale out based on CPU utilization (Future Enhancement).</li>
+   <li>[x] <strong>Dynamic UI Rendering:</strong> Fixed Terraform interpolation and Node.js DOM conflicts for a resilient frontend.</li>
+   <li>[x] <strong>Reliability & Failure Design:</strong> Implemented ASG with <code>health_check_type = "ELB"</code> and <code>instance_refresh</code> to ensure automated recovery and zero-downtime updates.</li>
+   <li>[ ] <strong>HTTPS:</strong> Implement SSL termination using AWS Certificate Manager (ACM).</li>
+   <li>[ ] <strong>Dynamic Scaling Policy:</strong> Implement <code>aws_autoscaling_policy</code> to scale out based on CPU utilization (currently configured as a fixed-size reliable fleet).</li>
    <li>[ ] <strong>Bastion Host:</strong> Move the database and web servers to private subnets for enhanced security.</li>
-   <li>[ ] <strong>Advanced Analytics:</strong> Implement <strong>Amazon Athena</strong> queries to analyze the S3 access logs for performance bottlenecks.</li>
-   <li>[ ] <strong>Anomaly Detection:</strong> Implement <strong>Amazon GuardDuty</strong> to automatically flag suspicious patterns (like port scanning) found in the Flow Logs.</li>
+   <li>[ ] <strong>Edge Security (WAF):</strong> Deploy <strong>AWS WAF</strong> to protect the Application Load Balancer from common web exploits like SQL Injection and Cross-Site Scripting (XSS).</li>
+</ul>
 </ul>
 <div align="right"><a href="#readme-top">↑ Back to Top</a></div>
 
@@ -683,6 +706,18 @@ This section is automatically updated with the latest infrastructure details.
       <tr>
          <td><strong>ALB Algorithms</strong></td>
          <td>By default, the ALB uses a round-robin approach at the request level. If you don't see the ID change immediately, it may be due to HTTP Keep-Alive (the browser reusing a connection) or Stickiness settings (which are disabled in this project to better demonstrate load distribution).</td>
+      </tr>
+      <tr>
+         <td><strong>Terraform Variable Interpolation in UserData</strong></td>
+         <td>One of the most complex challenges was passing JavaScript code through Terraform's <code>templatefile()</code> function. Terraform interprets <code>${...}</code> as variables to be replaced. I implemented <strong>Double-Dollar Escaping</strong> (<code>$${id}</code>) for browser-side template literals and transitioned to standard <strong>String Concatenation</strong> for complex HTML generation to ensure Terraform and the Bash <code>cat</code> command didn't corrupt the JavaScript logic.</td>
+      </tr>
+      <tr>
+         <td><strong>Stateful Database Initialization</strong></td>
+         <td>Ensuring the database schema was ready before the application started required a robust Node.js initialization script that handles "Table Already Exists" errors and performs conditional migrations (like adding the <code>completed</code> column) without crashing the service.</td>
+      </tr>
+      <tr>
+         <td><strong>Browser Extension DOM Interference</strong></td>
+         <td>I identified that the browser extension MetaMask can cause <code>NotFoundError</code> when scripts rapidly update the DOM via <code>innerHTML</code>. Documented the requirement for testing in <strong>Incognito Mode</strong> to isolate application logic from third-party browser scripts.</td>
       </tr>
    </tbody>
 </table>
@@ -754,8 +789,8 @@ This section is automatically updated with the latest infrastructure details.
          <td>
             <ul>
                <li><strong>Free-Tier Alignment:</strong> Utilizes <code>t3.micro</code> instances and a single RDS instance to stay within the AWS Free Tier.</li>
-               <li><strong>Single-AZ Strategy:</strong> Eliminated Multi-AZ and Cross-Zone Data Transfer costs, reducing monthly spend by ~50% compared to a HA setup.</li>
-               <li><strong>Log Retention:</strong> Set to 7 days to prevent unnecessary storage costs in CloudWatch.</li>
+               <li><strong>Log Retention:</strong> Set to 1 day to prevent unnecessary storage costs in CloudWatch.</li>
+               <li><strong>Database Tiering:</strong> Leveraged <code>db.t3.micro</code> to stay within the AWS Free Tier while still testing Multi-AZ logic.</li>
             </ul>
          </td>
       </tr>
