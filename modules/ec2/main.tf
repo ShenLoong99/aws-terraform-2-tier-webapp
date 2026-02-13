@@ -81,9 +81,9 @@ resource "aws_launch_template" "app_lt" {
 # Auto Scaling Group to manage EC2 Instances
 resource "aws_autoscaling_group" "app_asg" {
   name                = "webapp-asg"
-  desired_capacity    = 1 # Absolute minimum for cost saving
+  desired_capacity    = 2 # 1 for cost saving, 2 for earning purposes
   max_size            = 2 # Allow small burst if needed
-  min_size            = 1
+  min_size            = 2
   vpc_zone_identifier = var.public_subnet_ids  # Spans multiple AZs for reliability
   target_group_arns   = [var.target_group_arn] # Attach to the ALB Target Group
 
