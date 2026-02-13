@@ -709,7 +709,6 @@ This section is automatically updated with the latest infrastructure details.
          <td>
             <ul>
                <li><strong>Data Persistence:</strong> RDS MySQL managed database provides automated backups and multi-AZ failover capabilities.</li>
-               <li><strong>Manual Scaling:</strong> Simplifies architecture by avoiding ASG complexity, allowing for predictable resource management in a dev/test context.</li>
                <li><strong>Health Monitoring:</strong> The Application Load Balancer performs active health checks to notify of instance downtime via CloudWatch Alarms.</li>
             </ul>
          </td>
