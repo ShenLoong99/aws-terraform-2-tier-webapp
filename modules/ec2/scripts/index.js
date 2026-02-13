@@ -92,9 +92,9 @@ const getLayout = () => {
   // BROWSER-SIDE FETCH: Escaping the backticks and using $$ for Terraform
   // Result on EC2 will be: `/api/tasks/complete/${id}`
   html +=
-    'async function doneTask(id) { await fetch(`/api/tasks/complete/$${id}`, {method:"PUT"}); loadTasks(); }';
+    'async function doneTask(id) { await fetch("/api/tasks/complete/" + id, {method:"PUT"}); loadTasks(); }';
   html +=
-    'async function deleteTask(id) { if(!confirm("Delete this task?")) return; await fetch(`/api/tasks/$${id}`, {method:"DELETE"}); loadTasks(); }';
+    'async function deleteTask(id) { if(!confirm("Delete this task?")) return; await fetch("/api/tasks/" + id, {method:"DELETE"}); loadTasks(); }';
 
   html += "loadTasks();";
   html += "</script></body></html>";
