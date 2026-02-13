@@ -22,21 +22,14 @@ db.on("error", (err) => {
   console.error("Database error:", err);
 });
 
-// Robust Initialization: Step 1 - Create table
+// Database Initialization
 db.query(
-  `CREATE TABLE IF NOT EXISTS items (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    completed TINYINT(1) DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)`,
+  "CREATE TABLE IF NOT EXISTS items (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL, completed TINYINT(1) DEFAULT 0, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)",
   (err) => {
     if (err) return console.error("Table Init Error:", err);
-
-    // Step 2 - Add 'completed' column if it's missing (Version-safe way)
-    db.query(`SHOW COLUMNS FROM items LIKE 'completed'`, (err, rows) => {
+    db.query("SHOW COLUMNS FROM items LIKE 'completed'", (err, rows) => {
       if (!err && rows.length === 0) {
-        db.query(`ALTER TABLE items ADD COLUMN completed TINYINT(1) DEFAULT 0`);
+        db.query("ALTER TABLE items ADD COLUMN completed TINYINT(1) DEFAULT 0");
       }
     });
   },
@@ -62,6 +55,8 @@ const getLayout = () => {
     '<button onclick="addTask()" class="btn btn-primary px-4"><i class="bi bi-plus-lg"></i></button></div>';
   html +=
     '<div id="taskList"><p class="text-center text-muted">Loading tasks...</p></div></div>';
+
+  // Server-side variable: Using standard concat to avoid Terraform looking for {os.hostname}
   html +=
     '<p class="text-center text-muted mt-3 small">Server ID: ' +
     os.hostname() +
@@ -77,6 +72,8 @@ const getLayout = () => {
     "    if (tasks.length === 0) { list.innerHTML = \"<p class='text-center text-muted py-3'>No tasks yet!</p>\"; return; }";
   html += "    list.innerHTML = tasks.map(function(t) {";
   html += '      var cls = t.completed ? "completed-task" : "";';
+
+  // BROWSER-SIDE ESCAPING: We use standard ' + t.id + ' to avoid any ${} patterns
   html +=
     "      var btn = !t.completed ? \"<button onclick='doneTask(\" + t.id + \")' class='btn btn-sm btn-success me-2'><i class='bi bi-check-lg'></i></button>\" : \"\";";
   html +=
@@ -88,12 +85,17 @@ const getLayout = () => {
   html += '    }).join("");';
   html += '  } catch (e) { console.error("Load failed", e); }';
   html += "}";
+
   html +=
     'async function addTask() { const input = document.getElementById("taskInput"); if(!input.value) return; await fetch("/api/tasks", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({name:input.value})}); input.value=""; loadTasks(); }';
+
+  // BROWSER-SIDE FETCH: Escaping the backticks and using $$ for Terraform
+  // Result on EC2 will be: `/api/tasks/complete/${id}`
   html +=
-    'async function doneTask(id) { await fetch("/api/tasks/complete/" + id, {method:"PUT"}); loadTasks(); }';
+    'async function doneTask(id) { await fetch(`/api/tasks/complete/$${id}`, {method:"PUT"}); loadTasks(); }';
   html +=
-    'async function deleteTask(id) { if(!confirm("Delete this task?")) return; await fetch("/api/tasks/" + id, {method:"DELETE"}); loadTasks(); }';
+    'async function deleteTask(id) { if(!confirm("Delete this task?")) return; await fetch(`/api/tasks/$${id}`, {method:"DELETE"}); loadTasks(); }';
+
   html += "loadTasks();";
   html += "</script></body></html>";
 

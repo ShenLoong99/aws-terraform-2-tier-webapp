@@ -57,7 +57,7 @@ resource "tls_private_key" "main" {
   rsa_bits  = 4096
 }
 
-# Register the Public Key with AWS
+# Register the Public Key with AWS test
 resource "aws_key_pair" "generated_key" {
   key_name   = "project-key"
   public_key = tls_private_key.main.public_key_openssh
