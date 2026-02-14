@@ -9,7 +9,7 @@
 [![Unlicense License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-   <h1>🚀 Two-Tier WebApp</h1>
+   <h1>🚀 High Availability Two-Tier WebApp</h1>
    <p>
       <img src="assets/cover-image.png" alt="cover-image" width="800" /> <br>
       <strong>A Resilient Node.js Application with Automated Scaling and Real-Time Observability</strong><br>
